@@ -6,9 +6,8 @@ import numpy as np
 from utils import heuristic, Vertex, Vertices
 from typing import Dict, List
 
-OBSTACLE = 255
 UNOCCUPIED = 0
-TRAJ = 2
+OBSTACLE = 255
 
 
 class DStarLite:
