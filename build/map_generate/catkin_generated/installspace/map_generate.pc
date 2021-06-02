@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/install
+
+Name: map_generate
+Description: Description of map_generate
+Version: 1.2.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp std_msgs sensor_msgs geometry_msgs nav_msgs tf gazebo_ros

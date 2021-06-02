@@ -1,0 +1,3 @@
+<launch>
+    <node name="slam" pkg="slam" type="slam.py" output="screen" />
+</launch>

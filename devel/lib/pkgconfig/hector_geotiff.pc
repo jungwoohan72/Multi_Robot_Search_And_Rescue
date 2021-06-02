@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: hector_geotiff
+Description: Description of hector_geotiff
+Version: 0.5.2
+Cflags: -I/home/morin-sol/ME652/src/hector_slam/hector_geotiff/include -I/usr/include/eigen3 -I/usr/include/x86_64-linux-gnu/qt5/ -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/lib/x86_64-linux-gnu/qt5//mkspecs/linux-g++ -I/usr/include
+Libs: -L${prefix}/lib -lgeotiff_writer /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.9.5
+Requires: hector_map_tools hector_nav_msgs nav_msgs pluginlib roscpp std_msgs

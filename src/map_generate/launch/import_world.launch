@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <arg name="robot_name" default="maze" />
+    <arg name="x" default="16" />
+    <arg name="y" default="5" />
+    <arg name="z" default="0.0" />
+    <arg name="roll" default="0"/>
+    <arg name="pitch" default="0"/>
+    <arg name="yaw" default="0.0" />
+    <arg name="sdf_robot_file" value="$(find map_generate)/worlds/model.sdf"/>
+    
+    <node name="$(arg robot_name)_spawn_world" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    args="-file $(arg sdf_robot_file) -sdf -model maze -x $(arg x) -y $(arg y)"/>
+</launch>

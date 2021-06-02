@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: hector_nav_msgs
+Description: Description of hector_nav_msgs
+Version: 0.5.2
+Cflags: -I/home/morin-sol/ME652/devel/include
+Libs: -L${prefix}/lib 
+Requires: nav_msgs geometry_msgs message_runtime std_msgs
