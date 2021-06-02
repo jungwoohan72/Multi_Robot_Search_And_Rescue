@@ -984,6 +984,12 @@ nav_msgs_DIR:PATH=/opt/ros/melodic/share/nav_msgs/cmake
 //Path to a library.
 onelib:FILEPATH=/usr/lib/x86_64-linux-gnu/libsdformat.so
 
+//Value Computed by CMake
+planning_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/planning
+
+//Value Computed by CMake
+planning_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/planning
+
 //The directory containing a CMake configuration file for pluginlib.
 pluginlib_DIR:PATH=/opt/ros/melodic/share/pluginlib/cmake
 
@@ -1021,10 +1027,10 @@ rostime_DIR:PATH=/opt/ros/melodic/share/rostime/cmake
 sensor_msgs_DIR:PATH=/opt/ros/melodic/share/sensor_msgs/cmake
 
 //Value Computed by CMake
-slam_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/slam
+slam_BINARY_DIR:STATIC=/home/morin-sol/ME652/build
 
 //Value Computed by CMake
-slam_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/slam
+slam_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src
 
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake

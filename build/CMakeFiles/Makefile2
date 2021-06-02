@@ -2600,22 +2600,22 @@ clean: hector_slam/hector_marker_drawing/CMakeFiles/visualization_msgs_generate_
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory slam
+# Directory level rules for directory planning
 
 # Convenience name for "all" pass in the directory.
-slam/all:
+planning/all:
 
-.PHONY : slam/all
+.PHONY : planning/all
 
 # Convenience name for "clean" pass in the directory.
-slam/clean:
+planning/clean:
 
-.PHONY : slam/clean
+.PHONY : planning/clean
 
 # Convenience name for "preinstall" pass in the directory.
-slam/preinstall:
+planning/preinstall:
 
-.PHONY : slam/preinstall
+.PHONY : planning/preinstall
 
 #=============================================================================
 # Directory level rules for directory hector_slam/hector_compressed_map_transport
