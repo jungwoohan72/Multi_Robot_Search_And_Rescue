@@ -17,6 +17,10 @@ conda activate ME652
 #### Run Command
 
 ```shell
+roslaunch planning planning.launch
+
+rosbag play laser.bag --clock
+
 roslaunch hector_slam_launch tutorial.launch
 
 roslaunch gazebo_ros empty_world.launch
