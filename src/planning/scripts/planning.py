@@ -26,24 +26,24 @@ TRAJ = 2
 OBSTACLE = 255
 
 # Global variable
-k = 0; h = 0; w = 0
+k = 0; h = 512; w = 512
 start = np.zeros(2)
 goal = np.zeros(2)
 current = np.zeros(2)
 
-class planner(object):
-    def __init__(self):
-        self.map_sub = rospy.Subscriber("/map", OccupancyGrid, self.map_cb, queue_size=1)
-        self.ctrl_pub = rospy.Publisher("/cmd", Float64MultiArray,queue_size=1)
-        self.map = np.array([])
-        self.ctrl = np.array([])
+class Planner(object):
+    def __init__(self, i):
+        self.map_sub = rospy.Subscriber("/map"+str(i), OccupancyGrid, self.map_cb, queue_size=1)
+        self.ctrl_pub = rospy.Publisher("/cmd"+str(i), Float64MultiArray,queue_size=1)
+        self.map = np.zeros((h,w))
+        self.ctrl = np.zeros(2)
         
     def map_cb(self, msgs):
         global k, h, w
         h = msgs.info.height
         w = msgs.info.width
         input = np.transpose(np.reshape(msgs.data, (h,w)))
-        batch = 5
+        batch = 4
         for i in range(h):
             for j in range(w):
                 if input[i, j] == 100:
@@ -54,8 +54,6 @@ class planner(object):
         map = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3))
         self.map = map
         self.local2world()
-        # cv.imshow('map'+str(k), map)
-        # k += 1
     
     def local2world(self):
         # transform local map to world map
@@ -71,7 +69,10 @@ class planner(object):
         V (x=2, y=0)
         x, row
         """
-        global start, goal, current, h, w
+        global start, goal, current, k, h, w
+
+        cv.imshow('map'+str(k), self.map)
+        k += 1
 
         # gui = Animation(title="D* Lite Path Planning",
         #                 width=10,
@@ -101,7 +102,7 @@ class planner(object):
 
     def main(self):
         try:
-            rate = rospy.Rate(5)
+            rate = rospy.Rate(0.1)
             while not rospy.is_shutdown():
                 self.planning()
                 rate.sleep()
@@ -112,8 +113,9 @@ class planner(object):
 if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
-        p = planner()
-        p.main()
+        for i in range(1, 4):
+            p = Planner(i)
+            p.main()
 
         rospy.spin()
 
