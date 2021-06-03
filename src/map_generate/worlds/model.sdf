@@ -1192,7 +1192,7 @@
     </link>
 
     <link name='new_wall'>
-      <pose frame=''>-3.425 3.5 9e-06 0 -0 0</pose>
+      <pose frame=''>-1.9 3.51 9e-06 0 -0 0</pose>
       <inertial>
         <mass>3.50538</mass>
         <inertia>
@@ -1209,7 +1209,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <box>
-            <size>6.42122 0.545905 1</size>
+            <size>3 0.545905 1</size>
           </box>
         </geometry>
         <material>
@@ -1285,7 +1285,7 @@
     </link>
 
     <link name='new_wall_2'>
-      <pose frame=''>-8.30 3.5 9e-06 0 -0 0</pose>
+      <pose frame=''>-8.87 0.76 9e-06 0 -0 0</pose>
       <inertial>
         <mass>3.50538</mass>
         <inertia>
@@ -4052,7 +4052,7 @@
     </link>
 
     <link name='engine_1'>
-      <pose frame=''>-6.1551 8.792560 9e-06 0 0 -0.406538</pose>
+      <pose frame=''>-6.5 8.0 9e-06 0 0 -0.406538</pose>
       <inertial>
         <mass>1.94722</mass>
         <inertia>
@@ -4144,7 +4144,7 @@
     </link>
 
     <link name='engine_2'>
-      <pose frame=''>-6.1551 5.792560 9e-06 0 0 -0.406538</pose>
+      <pose frame=''>-6.1551 6.5 9e-06 0 0 -0.406538</pose>
       <inertial>
         <mass>1.94722</mass>
         <inertia>

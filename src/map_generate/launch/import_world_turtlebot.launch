@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find map_generate)/worlds/maze.world"/>
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="true"/>
+      <arg name="gui" value="true"/>
+      <arg name="headless" value="false"/>
+      <arg name="debug" value="false"/>
+    </include>
+
+  <group ns="robot1">
+    <include file="$(find turtlebot3_description)/launch/spawn_turtlebot3.launch">
+      <arg name="init_pose" value="-x 1 -y 1 -z 0" />
+      <arg name="robot_name"  value="Robot1" />
+    </include>
+  </group>
+
+  <group ns="robot2">
+    <include file="$(find turtlebot3_description)/launch/spawn_turtlebot3.launch">
+      <arg name="init_pose" value="-x -1 -y 1 -z 0" />
+      <arg name="robot_name"  value="Robot2" />
+    </include>
+  </group>
+
+  <group ns="robot3">
+    <include file="$(find turtlebot3_description)/launch/spawn_turtlebot3.launch">
+      <arg name="init_pose" value="-x -1 -y 2 -z 0" />
+      <arg name="robot_name"  value="Robot3" />
+    </include>
+  </group>
+</launch>
