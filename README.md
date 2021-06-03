@@ -17,13 +17,11 @@ conda activate ME652
 #### Run Command
 
 ```shell
-roslaunch planning planning.launch
-
-rosbag play laser.bag --clock
-
-roslaunch hector_slam_launch tutorial.launch
+roslaunch hector_slam_launch slam.launch
 
 roslaunch map_generate import_world.launch
+
+roslaunch planning planning.launch
 
 rosrun husky_teleop husky_teleop_key
 ```
