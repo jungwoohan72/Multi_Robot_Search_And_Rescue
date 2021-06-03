@@ -940,10 +940,10 @@ husky_description_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/husky_descriptio
 husky_description_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/husky_description
 
 //Value Computed by CMake
-husky_teleop_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/turtlebot3_teleop
+husky_teleop_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/husky_teleop
 
 //Value Computed by CMake
-husky_teleop_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/turtlebot3_teleop
+husky_teleop_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/husky_teleop
 
 //The directory containing a CMake configuration file for ignition-cmake0.
 ignition-cmake0_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/ignition-cmake0

@@ -71,7 +71,7 @@ public:
 class HectorMappingRos
 {
 public:
-  HectorMappingRos(int i);
+  HectorMappingRos();
   ~HectorMappingRos();
 
   void scanCallback(const sensor_msgs::LaserScan& scan);
@@ -168,6 +168,7 @@ protected:
   std::string p_tf_map_scanmatch_transform_frame_name_;
 
   std::string p_scan_topic_;
+  std::string p_mapTopic_;
   std::string p_sys_msg_topic_;
 
   std::string p_pose_update_topic_;

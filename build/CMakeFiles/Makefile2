@@ -2600,22 +2600,22 @@ clean: hector_slam/hector_marker_drawing/CMakeFiles/visualization_msgs_generate_
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory turtlebot3_teleop
+# Directory level rules for directory husky_teleop
 
 # Convenience name for "all" pass in the directory.
-turtlebot3_teleop/all:
+husky_teleop/all:
 
-.PHONY : turtlebot3_teleop/all
+.PHONY : husky_teleop/all
 
 # Convenience name for "clean" pass in the directory.
-turtlebot3_teleop/clean:
+husky_teleop/clean:
 
-.PHONY : turtlebot3_teleop/clean
+.PHONY : husky_teleop/clean
 
 # Convenience name for "preinstall" pass in the directory.
-turtlebot3_teleop/preinstall:
+husky_teleop/preinstall:
 
-.PHONY : turtlebot3_teleop/preinstall
+.PHONY : husky_teleop/preinstall
 
 #=============================================================================
 # Directory level rules for directory planning
