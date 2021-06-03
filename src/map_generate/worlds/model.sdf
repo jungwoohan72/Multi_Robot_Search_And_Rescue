@@ -361,7 +361,7 @@
         </surface>
       </collision>
     </link>
-    
+
     <link name='link_4_clone_0_clone'>
       <pose frame=''>-17.8012 -10.6509 9e-06 0 -0 0</pose>
       <inertial>
@@ -2021,7 +2021,7 @@
       </collision>
     </link>
     <link name='link_4_clone_1_clone'>
-      <pose frame=''>-25.3389 3.5 9e-06 0 0 -1.56693</pose>
+      <pose frame=''>-25.338 3.5 9e-06 0 0 -1.56693</pose>
       <inertial>
         <mass>4.30693</mass>
         <inertia>

@@ -1,0 +1,13 @@
+digraph G {
+"odom" -> "base_footprint"[label="Broadcaster: /hector_mapping\nAverage rate: 89.033 Hz\nMost recent transform: 27.223 ( 0.037 sec old)\nBuffer length: 4.942 sec\n"];
+"map" -> "scanmatcher_frame"[label="Broadcaster: /hector_mapping\nAverage rate: 30.223 Hz\nMost recent transform: 27.211 ( 0.049 sec old)\nBuffer length: 4.930 sec\n"];
+"base_footprint" -> "robot1/Lidar"[label="Broadcaster: /static_transform_publisher_1622695787574327070\nAverage rate: 99.413 Hz\nMost recent transform: 27.262 ( -0.002 sec old)\nBuffer length: 4.939 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 27.260"[ shape=plaintext ] ;
+ }->"map";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 27.260"[ shape=plaintext ] ;
+ }->"odom";
+}
