@@ -52,6 +52,5 @@
     <param name="tf_map_scanmatch_transform_frame_name" value="$(arg tf_map_scanmatch_transform_frame_name)" />
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="robot1_broadcaster" args="0 0 0 0 0 0 0.01 base_footprint robot1/Lidar 10" />
   <!--<node pkg="tf" type="static_transform_publisher" name="map_nav_broadcaster" args="0 0 0 0 0 0 map nav 100"/>-->
 </launch>
