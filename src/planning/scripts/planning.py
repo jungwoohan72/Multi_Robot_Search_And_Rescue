@@ -9,6 +9,8 @@ from grid import OccupancyGridMap, SLAM
 from std_msgs.msg import Float64MultiArray
 from nav_msgs.msg import OccupancyGrid
 
+import multiprocessing
+
 # Define some colors
 BLACK = (0, 0, 0)  # BLACK
 UNOCCUPIED = (255, 255, 255)  # WHITE
@@ -31,12 +33,14 @@ start = np.zeros(2)
 goal = np.zeros(2)
 current = np.zeros(2)
 
-class Planner(object):
+class Planner(multiprocessing.Process):
     def __init__(self, i):
+        super(Planner, self).__init__()
         self.map_sub = rospy.Subscriber("/map"+str(i), OccupancyGrid, self.map_cb, queue_size=1)
         self.ctrl_pub = rospy.Publisher("/cmd"+str(i), Float64MultiArray,queue_size=1)
         self.map = np.zeros((h,w))
         self.ctrl = np.zeros(2)
+        self.cnt = i
         
     def map_cb(self, msgs):
         global k, h, w
@@ -71,7 +75,7 @@ class Planner(object):
         """
         global start, goal, current, k, h, w
 
-        cv.imshow('map'+str(k), self.map)
+        cv.imshow('map'+str(self.cnt)+'-'+str(k), self.map)
         k += 1
 
         # gui = Animation(title="D* Lite Path Planning",
@@ -100,12 +104,12 @@ class Planner(object):
         # self.ctrl_pub.publish(self.ctrl)
         pass
 
-    def main(self):
+    def run(self):
         try:
             rate = rospy.Rate(0.1)
-            while not rospy.is_shutdown():
-                self.planning()
-                rate.sleep()
+            self.planning()
+            rate.sleep()
+            
 
         except KeyboardInterrupt:
             pass
@@ -114,8 +118,8 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
         for i in range(1, 4):
-            p = Planner(i)
-            p.main()
+            globals()['p{}'.format(i)] = Planner(i)
+            globals()['p{}'.format(i)].start()
 
         rospy.spin()
 

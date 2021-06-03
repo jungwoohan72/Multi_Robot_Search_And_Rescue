@@ -67,7 +67,7 @@ set(husky_teleop_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(husky_teleop_SOURCE_PREFIX /home/morin-sol/ME652/src/turtlebot3_teleop)
+  set(husky_teleop_SOURCE_PREFIX /home/morin-sol/ME652/src/husky_teleop)
   set(husky_teleop_DEVEL_PREFIX /home/morin-sol/ME652/devel)
   set(husky_teleop_INSTALL_PREFIX "")
   set(husky_teleop_PREFIX ${husky_teleop_DEVEL_PREFIX})
@@ -110,7 +110,7 @@ if(NOT " " STREQUAL " ")
         message(FATAL_ERROR "Project 'husky_teleop' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'husky_teleop' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/morin-sol/ME652/src/turtlebot3_teleop/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'husky_teleop' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/morin-sol/ME652/src/husky_teleop/${idir}'.  ${_report}")
     endif()
     _list_append_unique(husky_teleop_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/morin-sol/ME652/devel/lib;/home/morin-sol/catkin_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/morin-sol/ME652/devel/lib;/home/morin-sol/ME652/devel/lib;/home/morin-sol/catkin_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

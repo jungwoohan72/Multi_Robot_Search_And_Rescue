@@ -265,6 +265,8 @@ HectorDebugInfoProvider.h
 /home/morin-sol/ME652/src/hector_slam/hector_mapping/src/HectorDebugInfoProvider.h
 HectorMapMutex.h
 /home/morin-sol/ME652/src/hector_slam/hector_mapping/src/HectorMapMutex.h
+string
+-
 
 /home/morin-sol/ME652/src/hector_slam/hector_mapping/src/HectorMappingRos.h
 ros/ros.h
