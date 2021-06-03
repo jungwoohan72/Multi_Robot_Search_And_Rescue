@@ -6,7 +6,6 @@ import numpy as np
 from d_star_lite import DStarLite
 from grid import OccupancyGridMap, SLAM
 
-from std_msgs.msg import Float64MultiArray
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Twist
 
@@ -38,9 +37,8 @@ class Planner(multiprocessing.Process):
     def __init__(self, i):
         super(Planner, self).__init__()
         self.map_sub = rospy.Subscriber("/map"+str(i), OccupancyGrid, self.map_cb, queue_size=1)
-        self.ctrl_pub = rospy.Publisher("/cmd"+str(i), Float64MultiArray,queue_size=1)
+        self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = np.zeros((h,w))
-        self.ctrl = np.zeros(2)
         self.cnt = i
         
     def map_cb(self, msgs):
@@ -76,9 +74,6 @@ class Planner(multiprocessing.Process):
         """
         global start, goal, current, k, h, w
 
-        cv.imshow('map'+str(self.cnt)+'-'+str(k), self.map)
-        k += 1
-
         # gui = Animation(title="D* Lite Path Planning",
         #                 width=10,
         #                 height=10,
@@ -101,16 +96,24 @@ class Planner(multiprocessing.Process):
 
     def control(self):
         # Calculate control input to publish
+        ctrl = Twist()
 
-        # self.ctrl_pub.publish(self.ctrl)
-        pass
+        ctrl.linear.x = 0.5
+        ctrl.linear.y = 0.0
+        ctrl.linear.z = 0.0
 
-    def run(self):
+        ctrl.angular.x = 0.0
+        ctrl.angular.y = 0.0
+        ctrl.angular.z = 0.0
+
+        print("publish"+str(i))
+        self.ctrl_pub.publish(ctrl)
+
+    def main(self):
         try:
-            rate = rospy.Rate(0.1)
+            rate = rospy.Rate(30)
             self.planning()
             rate.sleep()
-
 
         except KeyboardInterrupt:
             pass
@@ -120,7 +123,9 @@ if __name__ == '__main__':
         rospy.init_node('planning', anonymous=False)
         for i in range(1, 4):
             globals()['p{}'.format(i)] = Planner(i)
-            globals()['p{}'.format(i)].start()
+        while not rospy.is_shutdown():
+            for i in range(1, 4):
+                globals()['p{}'.format(i)].main()
 
         rospy.spin()
 
