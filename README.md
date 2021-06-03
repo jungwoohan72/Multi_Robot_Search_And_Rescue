@@ -23,8 +23,7 @@ rosbag play laser.bag --clock
 
 roslaunch hector_slam_launch tutorial.launch
 
-roslaunch map_generate import_world.launch ---> launch maze map with three huskys
+roslaunch map_generate import_world.launch
 
-rosrun husky_teleop husky_teleop_key ---> control node for the huskys
+rosrun husky_teleop husky_teleop_key
 ```
-
