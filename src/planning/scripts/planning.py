@@ -37,6 +37,7 @@ class Planner(object):
         self.ctrl_pub = rospy.Publisher("/cmd"+str(i), Float64MultiArray,queue_size=1)
         self.map = np.zeros((h,w))
         self.ctrl = np.zeros(2)
+        self.cnt = i
         
     def map_cb(self, msgs):
         global k, h, w
@@ -71,7 +72,7 @@ class Planner(object):
         """
         global start, goal, current, k, h, w
 
-        cv.imshow('map'+str(k), self.map)
+        cv.imshow('map'+str(self.cnt)+'-'+str(k), self.map)
         k += 1
 
         # gui = Animation(title="D* Lite Path Planning",
@@ -113,9 +114,15 @@ class Planner(object):
 if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
-        for i in range(1, 4):
-            p = Planner(i)
-            p.main()
+        p1 = Planner(1)
+        p1.main()
+        p2 = Planner(2)
+        p2.main()
+        p3 = Planner(3)
+        p3.main()
+        # for i in range(1, 4):
+        #     globals()['p{}'.format(i)] = Planner(i)
+        #     globals()['p{}'.format(i)].main()
 
         rospy.spin()
 

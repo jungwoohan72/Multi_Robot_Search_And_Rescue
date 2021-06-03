@@ -38,12 +38,13 @@
 #include "HectorDrawings.h"
 #include "HectorDebugInfoProvider.h"
 #include "HectorMapMutex.h"
+#include <string>
 
 #ifndef TF_SCALAR_H
   typedef btScalar tfScalar;
 #endif
 
-HectorMappingRos::HectorMappingRos()
+HectorMappingRos::HectorMappingRos(int i)
   : debugInfoProvider(0)
   , hectorDrawings(0)
   , lastGetMapUpdateIndex(-100)
@@ -54,7 +55,7 @@ HectorMappingRos::HectorMappingRos()
 {
   ros::NodeHandle private_nh_("~");
 
-  std::string mapTopic_ = "map1";
+  std::string mapTopic_ = std::string("map") + std::to_string(i);
 
   private_nh_.param("pub_drawings", p_pub_drawings, false);
   private_nh_.param("pub_debug_output", p_pub_debug_output_, false);
@@ -75,7 +76,7 @@ HectorMappingRos::HectorMappingRos()
   private_nh_.param("map_update_distance_thresh", p_map_update_distance_threshold_, 0.4);
   private_nh_.param("map_update_angle_thresh", p_map_update_angle_threshold_, 0.9);
 
-  private_nh_.param("scan_topic", p_scan_topic_, std::string("scan"));
+  private_nh_.param("scan_topic", p_scan_topic_, std::string("robot") + std::to_string(i) + std::string("/scan"));
   private_nh_.param("sys_msg_topic", p_sys_msg_topic_, std::string("syscommand"));
   private_nh_.param("pose_update_topic", p_pose_update_topic_, std::string("poseupdate"));
 

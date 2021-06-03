@@ -71,9 +71,8 @@ public:
 class HectorMappingRos
 {
 public:
-  HectorMappingRos();
+  HectorMappingRos(int i);
   ~HectorMappingRos();
-
 
   void scanCallback(const sensor_msgs::LaserScan& scan);
   void sysMsgCallback(const std_msgs::String& string);
