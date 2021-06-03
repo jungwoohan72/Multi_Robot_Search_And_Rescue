@@ -8,6 +8,7 @@ from grid import OccupancyGridMap, SLAM
 
 from std_msgs.msg import Float64MultiArray
 from nav_msgs.msg import OccupancyGrid
+from geometry_msgs.msg import Twist
 
 import multiprocessing
 
@@ -109,7 +110,7 @@ class Planner(multiprocessing.Process):
             rate = rospy.Rate(0.1)
             self.planning()
             rate.sleep()
-            
+
 
         except KeyboardInterrupt:
             pass
