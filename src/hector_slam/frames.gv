@@ -1,0 +1,4 @@
+digraph G {
+"base_footprint" -> "laser"[label="Broadcaster: /play_1622600229068804671\nAverage rate: 20.118 Hz\nMost recent transform: 1543479503.979 \nBuffer length: 4.971 sec\n"];
+"odom" -> "base_footprint"[label="Broadcaster: /play_1622600229068804671\nAverage rate: 10.204 Hz\nMost recent transform: 1543479503.855 \nBuffer length: 4.900 sec\n"];
+}
