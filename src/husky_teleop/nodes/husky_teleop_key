@@ -190,7 +190,7 @@ if __name__=="__main__":
                 robot_2_y = target_linear_y_vel
                 status = status + 1
                 print(vels('robot 2', robot_2_x, target_linear_y_vel, robot_2_angular))
-            elif key == 'm' :
+            elif key == 'l' :
                 target_linear_y_vel = checkLinearLimitVelocity(robot_2_y - LIN_VEL_STEP_SIZE)
                 robot_2_y = target_linear_y_vel
                 status = status + 1
@@ -213,7 +213,7 @@ if __name__=="__main__":
 
             # Robot 3
 
-            elif key == '4' :
+            elif key == '8' :
                 target_linear_x_vel = checkLinearLimitVelocity(robot_3_x + LIN_VEL_STEP_SIZE)
                 robot_3_x = target_linear_x_vel
                 status = status + 1
