@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>turtlebot3_teleop</name>
+  <name>husky_teleop</name>
   <version>1.2.1</version>
   <description>
     Provides teleoperation using keyboard for TurtleBot3.

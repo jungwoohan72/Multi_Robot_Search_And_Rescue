@@ -16,23 +16,23 @@
     <arg name="robot3_name" default="robot3" />
     <arg name="x" default="16" />
     <arg name="y" default="5" />
-    
+
     <arg name="sdf_world_file" value="$(find map_generate)/worlds/model.sdf"/>
     <arg name="sdf_robot_file" value="$(find husky_description)/sdf/model.sdf"/>
-    
+
     <node name="$(arg world_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
     args="-file $(arg sdf_world_file) -sdf -model maze -x $(arg x) -y $(arg y)"/>
 
     <group ns="robot1">
-        <node name="$(arg robot1_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot1 -x -7.4 -y -5.5"/> 
+        <node name="$(arg robot1_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot1 -x -7.4 -y -5.5 -Y 1.57"/>
     </group>
 
     <group ns="robot2">
-        <node name="$(arg robot2_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot2 -x -7.5 -y 15.5"/> 
+        <node name="$(arg robot2_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot2 -x -7.5 -y 15.5 -Y -1.57"/>
     </group>
 
     <group ns="robot3">
-        <node name="$(arg robot3_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot3 -x 35 -y 9"/> 
+        <node name="$(arg robot3_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot3 -x 35 -y 9 -Y 3.14"/>
     </group>
 
 </launch>

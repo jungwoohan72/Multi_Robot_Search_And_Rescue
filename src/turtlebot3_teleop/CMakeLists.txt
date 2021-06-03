@@ -2,7 +2,7 @@
 # Set minimum required version of cmake, project name and compile options
 ################################################################################
 cmake_minimum_required(VERSION 2.8.3)
-project(turtlebot3_teleop)
+project(husky_teleop)
 
 ################################################################################
 # Find catkin packages and libraries for catkin and system dependencies
@@ -40,7 +40,7 @@ catkin_package(
 # Install
 ################################################################################
 catkin_install_python(PROGRAMS
-  nodes/turtlebot3_teleop_key
+  nodes/husky_teleop_key
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

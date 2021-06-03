@@ -109,7 +109,7 @@ if __name__=="__main__":
     if os.name != 'nt':
         settings = termios.tcgetattr(sys.stdin)
 
-    rospy.init_node('turtlebot3_teleop')
+    rospy.init_node('husky_teleop')
     pub_robot1 = rospy.Publisher('/robot1/cmd_vel', Twist, queue_size=10)
     pub_robot2 = rospy.Publisher('/robot2/cmd_vel', Twist, queue_size=10)
     pub_robot3 = rospy.Publisher('/robot3/cmd_vel', Twist, queue_size=10)
