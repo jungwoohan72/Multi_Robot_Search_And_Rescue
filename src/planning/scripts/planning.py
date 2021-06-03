@@ -26,7 +26,7 @@ TRAJ = 2
 OBSTACLE = 255
 
 # Global variable
-k = 0, h = 0, w = 0
+k = 0; h = 0; w = 0
 start = np.zeros(2)
 goal = np.zeros(2)
 current = np.zeros(2)
@@ -54,8 +54,8 @@ class planner(object):
         map = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3))
         self.map = map
         self.local2world()
-        cv.imshow('map', map)
-        k += 1
+        # cv.imshow('map'+str(k), map)
+        # k += 1
     
     def local2world(self):
         # transform local map to world map
@@ -83,12 +83,12 @@ class planner(object):
         #                 goal=goal)
 
         # D* Lite (optimized)
-        dstar = DStarLite(map=self.map,
-                        s_start=start,
-                        s_goal=goal)
+        # dstar = DStarLite(map=self.map,
+        #                 s_start=start,
+        #                 s_goal=goal)
 
-        # move and compute path
-        path, g, rhs = dstar.move_and_replan(robot_position=current)
+        # # move and compute path
+        # path, g, rhs = dstar.move_and_replan(robot_position=current)
 
         # gui.run_game(path=path)
         self.control()
@@ -96,7 +96,7 @@ class planner(object):
     def control(self):
         # Calculate control input to publish
 
-        self.ctrl_pub.publish(self.ctrl)
+        # self.ctrl_pub.publish(self.ctrl)
         pass
 
     def main(self):

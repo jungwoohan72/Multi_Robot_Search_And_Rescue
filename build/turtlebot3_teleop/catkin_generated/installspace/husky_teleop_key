@@ -1,0 +1,314 @@
+#!/usr/bin/env python2
+
+# Copyright (c) 2011, Willow Garage, Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#    * Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#    * Redistributions in binary form must reproduce the above copyright
+#      notice, this list of conditions and the following disclaimer in the
+#      documentation and/or other materials provided with the distribution.
+#    * Neither the name of the Willow Garage, Inc. nor the names of its
+#      contributors may be used to endorse or promote products derived from
+#       this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+import rospy
+import pdb
+from geometry_msgs.msg import Twist
+from std_msgs.msg import Float64 as joint_command
+import sys, select, os
+if os.name == 'nt':
+  import msvcrt
+else:
+  import tty, termios
+
+MAX_LIN_VEL = 3
+MAX_ANG_VEL = 2
+
+LIN_VEL_STEP_SIZE = 0.01
+ANG_VEL_STEP_SIZE = 0.1
+
+msg = """
+Control 3 Huskys
+---------------------------
+Moving around:
+
+     robot 1           robot 2          robot 3
+   q    w    e       u    i    o      7    8    9
+   a    s    d       j    k    l      4    5    6
+        x                 m                2
+
+
+CTRL-C to quit
+"""
+
+e = """
+Communications Failed
+"""
+
+def getKey():
+    if os.name == 'nt':
+        return msvcrt.getch()
+    tty.setraw(sys.stdin.fileno())
+    rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+    if rlist:
+        key = sys.stdin.read(1)
+    else:
+        key = ''
+
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    return key
+
+def vels(robot_idx, target_linear_x_vel, target_linear_y_vel, target_angular_vel):
+    return "currently: %s\t linear x vel %s\t linear y vel %s\t angular vel %s " % (robot_idx,target_linear_x_vel,target_linear_y_vel,target_angular_vel)
+
+def makeSimpleProfile(output, input, slop):
+    if input > output:
+        output = min( input, output + slop )
+    elif input < output:
+        output = max( input, output - slop )
+    else:
+        output = input
+
+    return output
+
+def constrain(input, low, high):
+    if input < low:
+      input = low
+    elif input > high:
+      input = high
+    else:
+      input = input
+
+    return input
+
+def checkLinearLimitVelocity(vel):
+    vel = constrain(vel, -MAX_LIN_VEL, MAX_LIN_VEL)
+    return vel
+
+def checkAngularLimitVelocity(vel):
+    vel = constrain(vel, -MAX_ANG_VEL, MAX_ANG_VEL)
+    return vel
+
+if __name__=="__main__":
+    if os.name != 'nt':
+        settings = termios.tcgetattr(sys.stdin)
+
+    rospy.init_node('husky_teleop')
+    pub_robot1 = rospy.Publisher('/robot1/cmd_vel', Twist, queue_size=10)
+    pub_robot2 = rospy.Publisher('/robot2/cmd_vel', Twist, queue_size=10)
+    pub_robot3 = rospy.Publisher('/robot3/cmd_vel', Twist, queue_size=10)
+
+    status = 0
+
+    robot_1_x = 0.0
+    robot_1_y = 0.0
+    robot_1_angular = 0.0
+
+    robot_2_x = 0.0
+    robot_2_y = 0.0
+    robot_2_angular = 0.0
+
+    robot_3_x = 0.0
+    robot_3_y = 0.0
+    robot_3_angular = 0.0
+
+    try:
+        robot1_command = Twist()
+        robot2_command = Twist()
+        robot3_command = Twist()
+        print(msg)
+        while(1):
+            key = getKey()
+
+            #Robot 1
+
+            if key == 'w' :
+                target_linear_x_vel = checkLinearLimitVelocity(robot_1_x + LIN_VEL_STEP_SIZE)
+                robot_1_x = target_linear_x_vel
+                status = status + 1
+                print(vels('robot 1', target_linear_x_vel, robot_1_y, robot_1_angular))
+            elif key == 'x' :
+                target_linear_x_vel = checkLinearLimitVelocity(robot_1_x - LIN_VEL_STEP_SIZE)
+                robot_1_x = target_linear_x_vel
+                status = status + 1
+                print(vels('robot 1', target_linear_x_vel, robot_1_y, robot_1_angular))
+            elif key == 'a' :
+                target_linear_y_vel = checkLinearLimitVelocity(robot_1_y + LIN_VEL_STEP_SIZE)
+                robot_1_y = target_linear_y_vel
+                status = status + 1
+                print(vels('robot 1', robot_1_x, target_linear_y_vel, robot_1_angular))
+            elif key == 'd' :
+                target_linear_y_vel = checkLinearLimitVelocity(robot_1_y - LIN_VEL_STEP_SIZE)
+                robot_1_y = target_linear_y_vel
+                status = status + 1
+                print(vels('robot 1', robot_1_x, target_linear_y_vel, robot_1_angular))
+            elif key == 'q' :
+                target_angular_vel = checkAngularLimitVelocity(robot_1_angular + ANG_VEL_STEP_SIZE)
+                robot_1_angular = target_angular_vel
+                status = status + 1
+                print(vels('robot 1', robot_1_x, robot_1_y, target_angular_vel))
+            elif key == 'e' :
+                target_angular_vel = checkAngularLimitVelocity(robot_1_angular - ANG_VEL_STEP_SIZE)
+                robot_1_angular = target_angular_vel
+                status = status + 1
+                print(vels('robot 1', robot_1_x, robot_1_y, target_angular_vel))
+            elif key == 's' :
+                robot_1_x   = 0.0
+                robot_1_y  = 0.0
+                robot_1_angular  = 0.0
+                print(vels('robot 1', robot_1_x, robot_1_y, robot_1_angular))
+
+            # Robot 2
+            elif key == 'i' :
+                target_linear_x_vel = checkLinearLimitVelocity(robot_2_x + LIN_VEL_STEP_SIZE)
+                robot_2_x = target_linear_x_vel
+                status = status + 1
+                print(vels('robot 2', target_linear_x_vel, robot_2_y, robot_2_angular))
+            elif key == 'm' :
+                target_linear_x_vel = checkLinearLimitVelocity(robot_2_x - LIN_VEL_STEP_SIZE)
+                robot_2_x = target_linear_x_vel
+                status = status + 1
+                print(vels('robot 2', target_linear_x_vel, robot_2_y, robot_2_angular))
+            elif key == 'j' :
+                target_linear_y_vel = checkLinearLimitVelocity(robot_2_y + LIN_VEL_STEP_SIZE)
+                robot_2_y = target_linear_y_vel
+                status = status + 1
+                print(vels('robot 2', robot_2_x, target_linear_y_vel, robot_2_angular))
+            elif key == 'm' :
+                target_linear_y_vel = checkLinearLimitVelocity(robot_2_y - LIN_VEL_STEP_SIZE)
+                robot_2_y = target_linear_y_vel
+                status = status + 1
+                print(vels('robot 2', robot_2_x, target_linear_y_vel, robot_2_angular))
+            elif key == 'u' :
+                target_angular_vel = checkAngularLimitVelocity(robot_2_angular + ANG_VEL_STEP_SIZE)
+                robot_2_angular = target_angular_vel
+                status = status + 1
+                print(vels('robot 2', robot_2_x, robot_2_y, target_angular_vel))
+            elif key == 'o' :
+                target_angular_vel = checkAngularLimitVelocity(robot_2_angular - ANG_VEL_STEP_SIZE)
+                robot_2_angular = target_angular_vel
+                status = status + 1
+                print(vels('robot 2', robot_2_x, robot_2_y, target_angular_vel))
+            elif key == 'k' :
+                robot_2_x   = 0.0
+                robot_2_y  = 0.0
+                robot_2_angular  = 0.0
+                print(vels('robot 2', robot_2_x, robot_2_y, robot_2_angular))
+
+            # Robot 3
+
+            elif key == '4' :
+                target_linear_x_vel = checkLinearLimitVelocity(robot_3_x + LIN_VEL_STEP_SIZE)
+                robot_3_x = target_linear_x_vel
+                status = status + 1
+                print(vels('robot 3', target_linear_x_vel, robot_3_y, robot_3_angular))
+            elif key == '2' :
+                target_linear_x_vel = checkLinearLimitVelocity(robot_3_x - LIN_VEL_STEP_SIZE)
+                robot_3_x = target_linear_x_vel
+                status = status + 1
+                print(vels('robot 3', target_linear_x_vel, robot_3_y, robot_3_angular))
+            elif key == '4' :
+                target_linear_y_vel = checkLinearLimitVelocity(robot_3_y + LIN_VEL_STEP_SIZE)
+                robot_3_y = target_linear_y_vel
+                status = status + 1
+                print(vels('robot 3', robot_3_x, target_linear_y_vel, robot_3_angular))
+            elif key == '6' :
+                target_linear_y_vel = checkLinearLimitVelocity(robot_3_y - LIN_VEL_STEP_SIZE)
+                robot_3_y = target_linear_y_vel
+                status = status + 1
+                print(vels('robot 3', robot_3_x, target_linear_y_vel, robot_3_angular))
+            elif key == '7' :
+                target_angular_vel = checkAngularLimitVelocity(robot_3_angular + ANG_VEL_STEP_SIZE)
+                robot_3_angular = target_angular_vel
+                status = status + 1
+                print(vels('robot 3', robot_3_x, robot_3_y, target_angular_vel))
+            elif key == '9' :
+                target_angular_vel = checkAngularLimitVelocity(robot_3_angular - ANG_VEL_STEP_SIZE)
+                robot_3_angular = target_angular_vel
+                status = status + 1
+                print(vels('robot 3', robot_3_x, robot_3_y, target_angular_vel))
+            elif key == '5' :
+                robot_3_x   = 0.0
+                robot_3_y  = 0.0
+                robot_3_angular  = 0.0
+                print(vels('robot 3', robot_3_x, robot_3_y, robot_3_angular))
+            else:
+                if (key == '\x03'):
+                    break
+
+            if status == 20:
+                print(msg)
+                status = 0
+
+            robot1_command.linear.x = robot_1_x
+            robot1_command.linear.y = robot_1_y
+            robot1_command.linear.z = 0
+            robot1_command.angular.x = 0
+            robot1_command.angular.y = 0
+            robot1_command.angular.z = robot_1_angular
+
+            robot2_command.linear.x = robot_2_x
+            robot2_command.linear.y = robot_2_y
+            robot2_command.linear.z = 0
+            robot2_command.angular.x = 0
+            robot2_command.angular.y = 0
+            robot2_command.angular.z = robot_2_angular
+
+            robot3_command.linear.x = robot_3_x
+            robot3_command.linear.y = robot_3_y
+            robot3_command.linear.z = 0
+            robot3_command.angular.x = 0
+            robot3_command.angular.y = 0
+            robot3_command.angular.z = robot_3_angular
+
+            pub_robot1.publish(robot1_command)
+            pub_robot2.publish(robot2_command)
+            pub_robot3.publish(robot3_command)
+
+
+    except:
+        print(e)
+
+    finally:
+            robot1_command = Twist()
+            robot2_command = Twist()
+            robot3_command = Twist()
+
+            robot1_command.linear.x = 0
+            robot1_command.linear.y = 0
+            robot1_command.linear.z = 0
+            robot1_command.angular.x = 0
+            robot1_command.angular.y = 0
+            robot1_command.angular.z = 0
+
+            robot2_command.linear.x = 0
+            robot2_command.linear.y = 0
+            robot2_command.linear.z = 0
+            robot2_command.angular.x = 0
+            robot2_command.angular.y = 0
+            robot2_command.angular.z = 0
+
+            robot3_command.linear.x = 0
+            robot3_command.linear.y = 0
+            robot3_command.linear.z = 0
+            robot3_command.angular.x = 0
+            robot3_command.angular.y = 0
+            robot3_command.angular.z = 0
+    if os.name != 'nt':
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

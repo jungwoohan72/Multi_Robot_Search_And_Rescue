@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: husky_teleop
+Description: Description of husky_teleop
+Version: 1.2.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: rospy geometry_msgs

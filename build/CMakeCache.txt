@@ -933,6 +933,18 @@ hector_trajectory_server_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/hector_sl
 //Value Computed by CMake
 hector_trajectory_server_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/hector_slam/hector_trajectory_server
 
+//Value Computed by CMake
+husky_description_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/husky_description
+
+//Value Computed by CMake
+husky_description_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/husky_description
+
+//Value Computed by CMake
+husky_teleop_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/turtlebot3_teleop
+
+//Value Computed by CMake
+husky_teleop_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/turtlebot3_teleop
+
 //The directory containing a CMake configuration file for ignition-cmake0.
 ignition-cmake0_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/ignition-cmake0
 
@@ -961,7 +973,7 @@ jsoncpp_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/jsoncpp
 laser_geometry_DIR:PATH=/opt/ros/melodic/share/laser_geometry/cmake
 
 //Path to a library.
-lib:FILEPATH=/opt/ros/melodic/lib/liblaser_geometry.so
+lib:FILEPATH=/opt/ros/melodic/lib/libxmlrpcpp.so
 
 //Value Computed by CMake
 map_generate_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/map_generate
@@ -995,6 +1007,9 @@ pluginlib_DIR:PATH=/opt/ros/melodic/share/pluginlib/cmake
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake
+
+//The directory containing a CMake configuration file for rosconsole_bridge.
+rosconsole_bridge_DIR:PATH=/opt/ros/melodic/share/rosconsole_bridge/cmake
 
 //The directory containing a CMake configuration file for roscpp.
 roscpp_DIR:PATH=/opt/ros/melodic/share/roscpp/cmake
@@ -1056,8 +1071,14 @@ tf_DIR:PATH=/opt/ros/melodic/share/tf/cmake
 //The directory containing a CMake configuration file for trajectory_msgs.
 trajectory_msgs_DIR:PATH=/opt/ros/melodic/share/trajectory_msgs/cmake
 
+//The directory containing a CMake configuration file for urdf.
+urdf_DIR:PATH=/opt/ros/melodic/share/urdf/cmake
+
 //The directory containing a CMake configuration file for visualization_msgs.
 visualization_msgs_DIR:PATH=/opt/ros/melodic/share/visualization_msgs/cmake
+
+//The directory containing a CMake configuration file for xacro.
+xacro_DIR:PATH=/opt/ros/melodic/share/xacro/cmake
 
 //The directory containing a CMake configuration file for xmlrpcpp.
 xmlrpcpp_DIR:PATH=/opt/ros/melodic/share/xmlrpcpp/cmake
@@ -1386,7 +1407,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=20
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=22
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
