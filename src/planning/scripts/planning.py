@@ -28,7 +28,7 @@ TRAJ = 2
 OBSTACLE = 255
 
 # Global variable
-k = 0; h = 512; w = 512
+h = 512; w = 512
 start = np.zeros(2)
 goal = np.zeros(2)
 current = np.zeros(2)
@@ -40,10 +40,9 @@ class Planner(multiprocessing.Process):
         self.map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, self.map_cb, queue_size=1)
         self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = np.zeros((h,w))
-        self.cnt = i
+        self.cnt = 0
         
     def map_cb(self, msgs):
-        global k
         h = msgs.info.height
         w = msgs.info.width
         input = np.transpose(np.reshape(msgs.data, (h,w)))
@@ -67,7 +66,7 @@ class Planner(multiprocessing.Process):
         V (x=2, y=0)
         x, row
         """
-        global start, goal, current, k, h, w
+        global start, goal, current
 
         # gui = Animation(title="D* Lite Path Planning",
         #                 width=10,
@@ -87,8 +86,8 @@ class Planner(multiprocessing.Process):
         # path, g, rhs = dstar.move_and_replan(robot_position=current)
 
         # gui.run_game(path=path)
-        k += 1
-        cv.imshow('map'+str(k), self.map)
+        cv.imshow('map'+str(i)+'-'+str(self.cnt), self.map)
+        self.cnt += 1
 
         self.control()
 
@@ -110,7 +109,7 @@ class Planner(multiprocessing.Process):
 
     def main(self):
         try:
-            rate = rospy.Rate(1.5)
+            rate = rospy.Rate(0.5)
             self.planning()
             rate.sleep()
 
