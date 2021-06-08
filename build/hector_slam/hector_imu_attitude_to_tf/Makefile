@@ -56,6 +56,30 @@ CMAKE_BINARY_DIR = /home/morin-sol/ME652/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -76,29 +100,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
 
 # Special rule for the target edit_cache
 edit_cache:
@@ -123,17 +124,16 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
 
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -168,19 +168,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule
+hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule:
+	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule
+.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-tf_generate_messages_py: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule
+tf_generate_messages_eus: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule
 
-.PHONY : tf_generate_messages_py
+.PHONY : tf_generate_messages_eus
 
 # fast build rule for target.
-tf_generate_messages_py/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/build
-.PHONY : tf_generate_messages_py/fast
+tf_generate_messages_eus/fast:
+	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/build
+.PHONY : tf_generate_messages_eus/fast
 
 # Convenience name for target.
 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_cpp.dir/rule:
@@ -198,79 +198,19 @@ tf_generate_messages_cpp/fast:
 .PHONY : tf_generate_messages_cpp/fast
 
 # Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_cpp.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_cpp.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_cpp.dir/rule
+hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule:
+	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule
+.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule
 
 # Convenience name for target.
-actionlib_generate_messages_cpp: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_cpp.dir/rule
+tf_generate_messages_py: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/rule
 
-.PHONY : actionlib_generate_messages_cpp
+.PHONY : tf_generate_messages_py
 
 # fast build rule for target.
-actionlib_generate_messages_cpp/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_cpp.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_cpp.dir/build
-.PHONY : actionlib_generate_messages_cpp/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_eus: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-.PHONY : tf_generate_messages_eus
-
-# fast build rule for target.
-tf_generate_messages_eus/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_eus.dir/build
-.PHONY : tf_generate_messages_eus/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_eus.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_eus.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-actionlib_generate_messages_eus: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_eus.dir/rule
-
-.PHONY : actionlib_generate_messages_eus
-
-# fast build rule for target.
-actionlib_generate_messages_eus/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_eus.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_eus.dir/build
-.PHONY : actionlib_generate_messages_eus/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_lisp.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-actionlib_generate_messages_lisp: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_lisp.dir/rule
-
-.PHONY : actionlib_generate_messages_lisp
-
-# fast build rule for target.
-actionlib_generate_messages_lisp/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_lisp.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_lisp.dir/build
-.PHONY : actionlib_generate_messages_lisp/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-actionlib_generate_messages_nodejs: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-
-.PHONY : actionlib_generate_messages_nodejs
-
-# fast build rule for target.
-actionlib_generate_messages_nodejs/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_nodejs.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_nodejs.dir/build
-.PHONY : actionlib_generate_messages_nodejs/fast
+tf_generate_messages_py/fast:
+	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_py.dir/build
+.PHONY : tf_generate_messages_py/fast
 
 # Convenience name for target.
 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_lisp.dir/rule:
@@ -288,21 +228,6 @@ tf_generate_messages_lisp/fast:
 .PHONY : tf_generate_messages_lisp/fast
 
 # Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_eus: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_eus
-
-# fast build rule for target.
-tf2_msgs_generate_messages_eus/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build
-.PHONY : tf2_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_nodejs.dir/rule:
 	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_nodejs.dir/rule
 .PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_nodejs.dir/rule
@@ -316,81 +241,6 @@ tf_generate_messages_nodejs: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf
 tf_generate_messages_nodejs/fast:
 	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_nodejs.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf_generate_messages_nodejs.dir/build
 .PHONY : tf_generate_messages_nodejs/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_nodejs: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-tf2_msgs_generate_messages_nodejs/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/build
-.PHONY : tf2_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_py.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_py.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_py.dir/rule
-
-# Convenience name for target.
-actionlib_generate_messages_py: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_py.dir/rule
-
-.PHONY : actionlib_generate_messages_py
-
-# fast build rule for target.
-actionlib_generate_messages_py/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_py.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/actionlib_generate_messages_py.dir/build
-.PHONY : actionlib_generate_messages_py/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_lisp: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_lisp
-
-# fast build rule for target.
-tf2_msgs_generate_messages_lisp/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/build
-.PHONY : tf2_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_cpp: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_cpp
-
-# fast build rule for target.
-tf2_msgs_generate_messages_cpp/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/build
-.PHONY : tf2_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f CMakeFiles/Makefile2 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule
-.PHONY : hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-tf2_msgs_generate_messages_py: hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_py.dir/rule
-
-.PHONY : tf2_msgs_generate_messages_py
-
-# fast build rule for target.
-tf2_msgs_generate_messages_py/fast:
-	cd /home/morin-sol/ME652/build && $(MAKE) -f hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_py.dir/build.make hector_slam/hector_imu_attitude_to_tf/CMakeFiles/tf2_msgs_generate_messages_py.dir/build
-.PHONY : tf2_msgs_generate_messages_py/fast
 
 # Convenience name for target.
 hector_slam/hector_imu_attitude_to_tf/CMakeFiles/imu_attitude_to_tf_node.dir/rule:
@@ -440,28 +290,18 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
+	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... test"
-	@echo "... tf_generate_messages_py"
-	@echo "... tf_generate_messages_cpp"
-	@echo "... actionlib_generate_messages_cpp"
-	@echo "... install"
 	@echo "... tf_generate_messages_eus"
-	@echo "... actionlib_generate_messages_eus"
-	@echo "... actionlib_generate_messages_lisp"
-	@echo "... actionlib_generate_messages_nodejs"
 	@echo "... edit_cache"
+	@echo "... tf_generate_messages_cpp"
+	@echo "... tf_generate_messages_py"
 	@echo "... tf_generate_messages_lisp"
-	@echo "... tf2_msgs_generate_messages_eus"
-	@echo "... install/local"
 	@echo "... tf_generate_messages_nodejs"
-	@echo "... tf2_msgs_generate_messages_nodejs"
-	@echo "... actionlib_generate_messages_py"
-	@echo "... tf2_msgs_generate_messages_lisp"
-	@echo "... install/strip"
-	@echo "... tf2_msgs_generate_messages_cpp"
-	@echo "... tf2_msgs_generate_messages_py"
+	@echo "... install/local"
+	@echo "... test"
 	@echo "... imu_attitude_to_tf_node"
 	@echo "... src/imu_attitude_to_tf_node.o"
 	@echo "... src/imu_attitude_to_tf_node.i"

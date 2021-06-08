@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/install
+
+Name: nav_core
+Description: Description of nav_core
+Version: 1.17.1
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: std_msgs geometry_msgs tf2_ros costmap_2d

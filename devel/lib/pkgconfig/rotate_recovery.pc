@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: rotate_recovery
+Description: Description of rotate_recovery
+Version: 1.17.1
+Cflags: -I/home/morin-sol/ME652/src/navigation/rotate_recovery/include
+Libs: -L${prefix}/lib -lrotate_recovery
+Requires: costmap_2d geometry_msgs nav_core pluginlib roscpp tf2 tf2_ros

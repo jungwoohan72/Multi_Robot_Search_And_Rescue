@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: dwa_local_planner
+Description: Description of dwa_local_planner
+Version: 1.17.1
+Cflags: -I/home/morin-sol/ME652/devel/include -I/home/morin-sol/ME652/src/navigation/dwa_local_planner/include
+Libs: -L${prefix}/lib -ldwa_local_planner
+Requires: base_local_planner dynamic_reconfigure nav_msgs pluginlib sensor_msgs roscpp tf2 tf2_ros

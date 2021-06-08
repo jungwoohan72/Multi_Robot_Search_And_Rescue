@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: move_slow_and_clear
+Description: Description of move_slow_and_clear
+Version: 1.17.1
+Cflags: -I/home/morin-sol/ME652/src/navigation/move_slow_and_clear/include
+Libs: -L${prefix}/lib -lmove_slow_and_clear
+Requires: geometry_msgs nav_core pluginlib roscpp

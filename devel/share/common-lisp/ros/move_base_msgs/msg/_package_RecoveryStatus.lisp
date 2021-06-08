@@ -1,0 +1,10 @@
+(cl:in-package move_base_msgs-msg)
+(cl:export '(POSE_STAMPED-VAL
+          POSE_STAMPED
+          CURRENT_RECOVERY_NUMBER-VAL
+          CURRENT_RECOVERY_NUMBER
+          TOTAL_NUMBER_OF_RECOVERIES-VAL
+          TOTAL_NUMBER_OF_RECOVERIES
+          RECOVERY_BEHAVIOR_NAME-VAL
+          RECOVERY_BEHAVIOR_NAME
+))

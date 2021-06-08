@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/install
+
+Name: move_base_msgs
+Description: Description of move_base_msgs
+Version: 1.14.1
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: actionlib_msgs geometry_msgs message_runtime

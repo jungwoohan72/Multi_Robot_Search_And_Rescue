@@ -53,3 +53,24 @@ Makefile:126: recipe for target 'cmTC_96db8/fast' failed
 make: *** [cmTC_96db8/fast] Error 2
 
 
+Determining if the include file pgm.h exists failed with the following output:
+Change Dir: /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4426d/fast"
+make[1]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_4426d.dir/build.make CMakeFiles/cmTC_4426d.dir/build
+make[2]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4426d.dir/CheckIncludeFile.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_4426d.dir/CheckIncludeFile.cxx.o -c /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
+/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx:1:10: fatal error: pgm.h: No such file or directory
+ #include <pgm.h>
+          ^~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_4426d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4426d.dir/CheckIncludeFile.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_4426d.dir/CheckIncludeFile.cxx.o] Error 1
+make[2]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4426d/fast' failed
+make[1]: *** [cmTC_4426d/fast] Error 2
+make[1]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+
+
