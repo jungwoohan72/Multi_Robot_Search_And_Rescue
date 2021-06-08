@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: tf2_ros
+Description: Description of tf2_ros
+Version: 0.6.7
+Cflags: -I/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_ros/include
+Libs: -L${prefix}/lib -ltf2_ros
+Requires: actionlib actionlib_msgs geometry_msgs message_filters roscpp rosgraph tf2 tf2_msgs tf2_py
