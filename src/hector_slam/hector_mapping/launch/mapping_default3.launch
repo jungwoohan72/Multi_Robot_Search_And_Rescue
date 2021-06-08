@@ -7,7 +7,7 @@
   <arg name="pub_map_odom_transform" default="true"/>
   <arg name="scan_subscriber_queue_size" default="5"/>
   <arg name="scan_topic" default="robot3/scan"/>
-  <arg name="mapTopic_" default="map3"/>
+  <arg name="mapTopic_" default="robot3/map"/>
   <arg name="map_size" default="2048"/>
 
   <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping3" output="screen">

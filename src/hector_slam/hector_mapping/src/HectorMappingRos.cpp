@@ -44,7 +44,7 @@
   typedef btScalar tfScalar;
 #endif
 
-HectorMappingRos::HectorMappingRos()
+HectorMappingRos::HectorMappingRos(int i)
   : debugInfoProvider(0)
   , hectorDrawings(0)
   , lastGetMapUpdateIndex(-100)
@@ -76,21 +76,21 @@ HectorMappingRos::HectorMappingRos()
   private_nh_.param("map_update_distance_thresh", p_map_update_distance_threshold_, 0.4);
   private_nh_.param("map_update_angle_thresh", p_map_update_angle_threshold_, 0.9);
 
-  private_nh_.param("scan_topic", p_scan_topic_, std::string("/scan"));
-  private_nh_.param("mapTopic_", p_mapTopic_, std::string("/map"));
+  private_nh_.param("scan_topic", p_scan_topic_, std::string("/robot"+std::to_string(i)+"/scan"));
+  private_nh_.param("mapTopic_", p_mapTopic_, std::string("/robot"+std::to_string(i)+"/map"));
   private_nh_.param("sys_msg_topic", p_sys_msg_topic_, std::string("syscommand"));
-  private_nh_.param("pose_update_topic", p_pose_update_topic_, std::string("poseupdate"));
+  private_nh_.param("pose_update_topic", p_pose_update_topic_, std::string("/robot"+std::to_string(i)+"/poseupdate"));
 
   private_nh_.param("use_tf_scan_transformation", p_use_tf_scan_transformation_,true);
   private_nh_.param("use_tf_pose_start_estimate", p_use_tf_pose_start_estimate_,false);
   private_nh_.param("map_with_known_poses", p_map_with_known_poses_, false);
 
-  private_nh_.param("base_frame", p_base_frame_, std::string("base_link"));
+  private_nh_.param("base_frame", p_base_frame_, std::string("/robot"+std::to_string(i)+"/base_link"));
   private_nh_.param("map_frame", p_map_frame_, std::string("map"));
-  private_nh_.param("odom_frame", p_odom_frame_, std::string("odom"));
+  private_nh_.param("odom_frame", p_odom_frame_, std::string("/robot"+std::to_string(i)+"/odom"));
 
   private_nh_.param("pub_map_scanmatch_transform", p_pub_map_scanmatch_transform_,true);
-  private_nh_.param("tf_map_scanmatch_transform_frame_name", p_tf_map_scanmatch_transform_frame_name_, std::string("scanmatcher_frame"));
+  private_nh_.param("tf_map_scanmatch_transform_frame_name", p_tf_map_scanmatch_transform_frame_name_, std::string("scanmatcher_frame"+std::to_string(i)));
 
   private_nh_.param("output_timing", p_timing_output_,false);
 
@@ -190,9 +190,9 @@ HectorMappingRos::HectorMappingRos()
   sysMsgSubscriber_ = node_.subscribe(p_sys_msg_topic_, 2, &HectorMappingRos::sysMsgCallback, this);
 
   poseUpdatePublisher_ = node_.advertise<geometry_msgs::PoseWithCovarianceStamped>(p_pose_update_topic_, 1, false);
-  posePublisher_ = node_.advertise<geometry_msgs::PoseStamped>("slam_out_pose", 1, false);
+  posePublisher_ = node_.advertise<geometry_msgs::PoseStamped>("/robot"+std::to_string(i)+"/slam_out_pose", 1, false);
 
-  scan_point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud>("slam_cloud",1,false);
+  scan_point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud>("/robot"+std::to_string(i)+"/slam_cloud",1,false);
 
   tfB_ = new tf::TransformBroadcaster();
   ROS_ASSERT(tfB_);
@@ -205,7 +205,7 @@ HectorMappingRos::HectorMappingRos()
   }
   */
 
-  initial_pose_sub_ = new message_filters::Subscriber<geometry_msgs::PoseWithCovarianceStamped>(node_, "initialpose", 2);
+  initial_pose_sub_ = new message_filters::Subscriber<geometry_msgs::PoseWithCovarianceStamped>(node_, "/robot"+std::to_string(i)+"/initialpose", 2);
   initial_pose_filter_ = new tf::MessageFilter<geometry_msgs::PoseWithCovarianceStamped>(*initial_pose_sub_, tf_, p_map_frame_, 2);
   initial_pose_filter_->registerCallback(boost::bind(&HectorMappingRos::initialPoseCallback, this, _1));
 

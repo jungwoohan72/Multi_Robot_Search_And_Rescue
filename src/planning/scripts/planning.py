@@ -56,6 +56,7 @@ class Planner(multiprocessing.Process):
         temp = np.array(input, dtype=np.uint8)
         map = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3))
         self.map = map
+        cv.imshow('map'+str(self.cnt), map)
         self.local2world()
     
     def local2world(self):
