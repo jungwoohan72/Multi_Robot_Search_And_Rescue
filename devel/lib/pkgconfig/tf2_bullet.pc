@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: tf2_bullet
+Description: Description of tf2_bullet
+Version: 0.6.7
+Cflags: -I/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_bullet/include -I/usr/include/bullet
+Libs: -L${prefix}/lib 
+Requires: 
