@@ -50,7 +50,7 @@ HectorMappingRos::HectorMappingRos()
   , lastGetMapUpdateIndex(-100)
   , tfB_(0)
   , map__publish_thread_(0)
-  , initial_pose_set_(false)
+  , initial_pose_set_(true)
   , pause_scan_processing_(false)
 {
   ros::NodeHandle private_nh_("~");

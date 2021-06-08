@@ -229,7 +229,7 @@ public:
             map_mat_data_p[img_index] = 0;
             break;
           }
-        }        
+        }
       }
       image_transport_publisher_tile_.publish(cv_img_tile_.toImageMsg());
     }
