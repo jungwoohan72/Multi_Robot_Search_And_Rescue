@@ -148,6 +148,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/morin-sol/ME652/build/hector_slam/hector_trajectory_server/cmake_install.cmake")
   include("/home/morin-sol/ME652/build/map_generate/cmake_install.cmake")
   include("/home/morin-sol/ME652/build/hector_slam/hector_mapping/cmake_install.cmake")
+  include("/home/morin-sol/ME652/build/ira_laser_tools/cmake_install.cmake")
   include("/home/morin-sol/ME652/build/husky_description/cmake_install.cmake")
 
 endif()

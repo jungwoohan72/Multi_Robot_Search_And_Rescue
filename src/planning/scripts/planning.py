@@ -32,17 +32,19 @@ k = 0; h = 512; w = 512
 start = np.zeros(2)
 goal = np.zeros(2)
 current = np.zeros(2)
+g_map = np.zeros((h,w))
 
 class Planner(multiprocessing.Process):
     def __init__(self, i):
         super(Planner, self).__init__()
+        global h, w
         self.map_sub = rospy.Subscriber("/robot"+str(i)+"/map", OccupancyGrid, self.map_cb, queue_size=1)
         self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = np.zeros((h,w))
         self.cnt = i
         
     def map_cb(self, msgs):
-        global k, h, w
+        global k
         h = msgs.info.height
         w = msgs.info.width
         input = np.transpose(np.reshape(msgs.data, (h,w)))
@@ -60,8 +62,11 @@ class Planner(multiprocessing.Process):
     
     def local2world(self):
         # transform local map to world map
-        map = self.map
-        pass
+        global g_map, k, h, w
+        for i in range(h):
+            for j in range(w):
+                if not g_map[i, j] and self.map[i, j]:
+                    g_map[i, j] += self.map[i, j]
 
     def planning(self):
         """
@@ -72,7 +77,7 @@ class Planner(multiprocessing.Process):
         V (x=2, y=0)
         x, row
         """
-        global start, goal, current, k, h, w
+        global start, goal, current, k, h, w, g_map
 
         # gui = Animation(title="D* Lite Path Planning",
         #                 width=10,
@@ -95,6 +100,7 @@ class Planner(multiprocessing.Process):
         k += 1
         if k%10 == 0:
             cv.imshow('map'+str(self.cnt)+'-'+str(k), self.map)
+            cv.imshow('map'+str(k), g_map)
 
         self.control()
 

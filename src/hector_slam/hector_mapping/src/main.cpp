@@ -35,6 +35,9 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "hector_slam");
 
+
+  /* for multi namespace */
+  HectorMappingRos sm(0);
   HectorMappingRos sm1(1);
   HectorMappingRos sm2(2);
   HectorMappingRos sm3(3);

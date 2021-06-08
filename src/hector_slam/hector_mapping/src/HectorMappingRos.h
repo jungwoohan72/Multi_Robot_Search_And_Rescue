@@ -71,6 +71,7 @@ public:
 class HectorMappingRos
 {
 public:
+  HectorMappingRos();
   HectorMappingRos(int i);
   ~HectorMappingRos();
 
