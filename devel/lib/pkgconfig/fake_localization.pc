@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: fake_localization
+Description: Description of fake_localization
+Version: 1.17.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: geometry_msgs nav_msgs roscpp rospy

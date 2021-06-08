@@ -659,3 +659,81 @@ Linking C executable cmTC_c0d0e
 make[1]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
 
 
+Determining if the include file unistd.h exists passed with the following output:
+Change Dir: /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8e12c/fast"
+make[1]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_8e12c.dir/build.make CMakeFiles/cmTC_8e12c.dir/build
+make[2]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8e12c.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_8e12c.dir/CheckIncludeFile.c.o   -c /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_8e12c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8e12c.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_8e12c.dir/CheckIncludeFile.c.o  -o cmTC_8e12c 
+make[2]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+make[1]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the drand48 exist passed with the following output:
+Change Dir: /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2c7c9/fast"
+make[1]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_2c7c9.dir/build.make CMakeFiles/cmTC_2c7c9.dir/build
+make[2]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2c7c9.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_2c7c9.dir/CheckSymbolExists.c.o   -c /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_2c7c9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c7c9.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_2c7c9.dir/CheckSymbolExists.c.o  -o cmTC_2c7c9 
+make[2]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+make[1]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+
+File /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef drand48
+  return ((int*)(&drand48))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the include file sys/time.h exists passed with the following output:
+Change Dir: /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3dfaa/fast"
+make[1]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_3dfaa.dir/build.make CMakeFiles/cmTC_3dfaa.dir/build
+make[2]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3dfaa.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_3dfaa.dir/CheckIncludeFile.c.o   -c /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_3dfaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3dfaa.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_3dfaa.dir/CheckIncludeFile.c.o  -o cmTC_3dfaa 
+make[2]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+make[1]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file FL/Fl.H exists passed with the following output:
+Change Dir: /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_788df/fast"
+make[1]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_788df.dir/build.make CMakeFiles/cmTC_788df.dir/build
+make[2]: Entering directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_788df.dir/CheckIncludeFile.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_788df.dir/CheckIncludeFile.cxx.o -c /home/morin-sol/ME652/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
+Linking CXX executable cmTC_788df
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_788df.dir/link.txt --verbose=1
+/usr/bin/c++       -rdynamic CMakeFiles/cmTC_788df.dir/CheckIncludeFile.cxx.o  -o cmTC_788df 
+make[2]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+make[1]: Leaving directory '/home/morin-sol/ME652/build/CMakeFiles/CMakeTmp'
+
+

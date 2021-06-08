@@ -20,6 +20,9 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/morin-sol/ME652/devel/include"
   "/home/morin-sol/ME652/src/hector_slam/hector_map_tools/include"
   "/home/morin-sol/ME652/src/hector_slam/hector_marker_drawing/include"
+  "/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_ros/include"
+  "/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2/include"
+  "/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_msgs/include"
   "/opt/ros/melodic/include"
   "/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/eigen3"
@@ -27,6 +30,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_ros/CMakeFiles/tf2_ros.dir/DependInfo.cmake"
+  "/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2/CMakeFiles/tf2.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -1,0 +1,8 @@
+prefix=/home/morin-sol/ME652/devel
+
+Name: move_base
+Description: Description of move_base
+Version: 1.17.1
+Cflags: -I/home/morin-sol/ME652/devel/include -I/home/morin-sol/ME652/src/navigation/move_base/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib -lmove_base
+Requires: dynamic_reconfigure geometry_msgs move_base_msgs nav_msgs roscpp

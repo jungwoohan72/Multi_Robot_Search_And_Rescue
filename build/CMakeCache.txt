@@ -38,6 +38,33 @@ BUILD_GTEST:BOOL=OFF
 //Build shared libraries (DLLs).
 BUILD_SHARED_LIBS:BOOL=ON
 
+//Path to a library.
+BULLET_COLLISION_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libBulletCollision.so
+
+//Path to a library.
+BULLET_COLLISION_LIBRARY_DEBUG:FILEPATH=BULLET_COLLISION_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+BULLET_DYNAMICS_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libBulletDynamics.so
+
+//Path to a library.
+BULLET_DYNAMICS_LIBRARY_DEBUG:FILEPATH=BULLET_DYNAMICS_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a file.
+BULLET_INCLUDE_DIR:PATH=/usr/include/bullet
+
+//Path to a library.
+BULLET_MATH_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libLinearMath.so
+
+//Path to a library.
+BULLET_MATH_LIBRARY_DEBUG:FILEPATH=BULLET_MATH_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+BULLET_SOFTBODY_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so
+
+//Path to a library.
+BULLET_SOFTBODY_LIBRARY_DEBUG:FILEPATH=BULLET_SOFTBODY_LIBRARY_DEBUG-NOTFOUND
+
 //Boost atomic library (debug)
 Boost_ATOMIC_LIBRARY_DEBUG:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_atomic.so
 
@@ -406,6 +433,9 @@ GTS_LIBRARY_m:FILEPATH=/usr/lib/x86_64-linux-gnu/libm.so
 
 //Path to a library.
 JSONCPP_LIBRARY_jsoncpp:FILEPATH=/usr/lib/x86_64-linux-gnu/libjsoncpp.so
+
+//Path to a library.
+KDL_LIBRARY:FILEPATH=/opt/ros/melodic/lib/liborocos-kdl.so
 
 //Path to a file.
 LIBUSB_1_INCLUDE_DIR:PATH=/usr/include
@@ -962,6 +992,21 @@ RT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/librt.so
 //The directory containing a CMake configuration file for SDFormat.
 SDFormat_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/sdformat
 
+//Path to a library.
+SDLMAIN_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libSDLmain.a
+
+//Path to a file.
+SDL_IMAGE_INCLUDE_DIR:PATH=/usr/include/SDL
+
+//Path to a library.
+SDL_IMAGE_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libSDL_image.so
+
+//Path to a file.
+SDL_INCLUDE_DIR:PATH=/usr/include/SDL
+
+//Where the SDL Library can be found
+SDL_LIBRARY:STRING=/usr/lib/x86_64-linux-gnu/libSDLmain.a;/usr/lib/x86_64-linux-gnu/libSDL.so;-lpthread
+
 //Enable debian style python package layout
 SETUPTOOLS_DEB_LAYOUT:BOOL=ON
 
@@ -1011,7 +1056,7 @@ ZeroMQ_DIR:PATH=ZeroMQ_DIR-NOTFOUND
 ZeroMQ_LIBRARY_zmq:FILEPATH=/usr/lib/x86_64-linux-gnu/libzmq.so
 
 //Path to a file.
-_file_name:FILEPATH=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_ros/test/message_filter_test.launch
+_file_name:FILEPATH=/home/morin-sol/ME652/src/navigation/clear_costmap_recovery/test/clear_tests.launch
 
 //Path to a file.
 _gmock_INCLUDES:FILEPATH=/usr/include/gmock/gmock.h
@@ -1025,11 +1070,44 @@ _gtest_INCLUDES:FILEPATH=/usr/include/gtest/gtest.h
 //Path to a file.
 _gtest_SOURCES:FILEPATH=/usr/src/gtest/src/gtest.cc
 
+//Path to a file.
+_path_name:FILEPATH=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_sensor_msgs/test/test_tf2_sensor_msgs.py
+
 //The directory containing a CMake configuration file for actionlib.
 actionlib_DIR:PATH=/opt/ros/melodic/share/actionlib/cmake
 
 //The directory containing a CMake configuration file for actionlib_msgs.
 actionlib_msgs_DIR:PATH=/opt/ros/melodic/share/actionlib_msgs/cmake
+
+//Value Computed by CMake
+amcl_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/amcl
+
+//Value Computed by CMake
+amcl_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/amcl
+
+//Dependencies for target
+amcl_map_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
+amcl_pf_LIB_DEPENDS:STATIC=
+
+//Dependencies for the target
+amcl_sensors_LIB_DEPENDS:STATIC=general;amcl_map;general;amcl_pf;
+
+//The directory containing a CMake configuration file for angles.
+angles_DIR:PATH=/opt/ros/melodic/share/angles/cmake
+
+//Value Computed by CMake
+base_local_planner_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/base_local_planner
+
+//The directory containing a CMake configuration file for base_local_planner.
+base_local_planner_DIR:PATH=/home/morin-sol/ME652/devel/share/base_local_planner/cmake
+
+//Dependencies for the target
+base_local_planner_LIB_DEPENDS:STATIC=general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;tf2;general;voxel_grid;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;
+
+//Value Computed by CMake
+base_local_planner_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/base_local_planner
 
 //The directory containing a CMake configuration file for bond.
 bond_DIR:PATH=/opt/ros/melodic/share/bond/cmake
@@ -1037,26 +1115,74 @@ bond_DIR:PATH=/opt/ros/melodic/share/bond/cmake
 //The directory containing a CMake configuration file for bondcpp.
 bondcpp_DIR:PATH=/opt/ros/melodic/share/bondcpp/cmake
 
+//Value Computed by CMake
+carrot_planner_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/carrot_planner
+
+//Dependencies for the target
+carrot_planner_LIB_DEPENDS:STATIC=general;base_local_planner;general;trajectory_planner_ros;general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+carrot_planner_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/carrot_planner
+
 //The directory containing a CMake configuration file for catkin.
 catkin_DIR:PATH=/opt/ros/melodic/share/catkin/cmake
 
 //The directory containing a CMake configuration file for class_loader.
 class_loader_DIR:PATH=/opt/ros/melodic/share/class_loader/cmake
 
+//Value Computed by CMake
+clear_costmap_recovery_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/clear_costmap_recovery
+
+//The directory containing a CMake configuration file for clear_costmap_recovery.
+clear_costmap_recovery_DIR:PATH=/home/morin-sol/ME652/devel/share/clear_costmap_recovery/cmake
+
+//Dependencies for the target
+clear_costmap_recovery_LIB_DEPENDS:STATIC=general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+clear_costmap_recovery_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/clear_costmap_recovery
+
 //The directory containing a CMake configuration file for cmake_modules.
 cmake_modules_DIR:PATH=/opt/ros/melodic/share/cmake_modules/cmake
+
+//Dependencies for the target
+combine_grids_LIB_DEPENDS:STATIC=general;opencv_calib3d;general;opencv_core;general;opencv_features2d;general;opencv_flann;general;opencv_highgui;general;opencv_imgcodecs;general;opencv_imgproc;general;opencv_ml;general;opencv_objdetect;general;opencv_photo;general;opencv_shape;general;opencv_stitching;general;opencv_superres;general;opencv_video;general;opencv_videoio;general;opencv_videostab;general;opencv_viz;general;opencv_aruco;general;opencv_bgsegm;general;opencv_bioinspired;general;opencv_ccalib;general;opencv_datasets;general;opencv_dpm;general;opencv_face;general;opencv_freetype;general;opencv_fuzzy;general;opencv_hdf;general;opencv_line_descriptor;general;opencv_optflow;general;opencv_phase_unwrapping;general;opencv_plot;general;opencv_reg;general;opencv_rgbd;general;opencv_saliency;general;opencv_stereo;general;opencv_structured_light;general;opencv_surface_matching;general;opencv_text;general;opencv_ximgproc;general;opencv_xobjdetect;general;opencv_xphoto;
 
 //The directory containing a CMake configuration file for console_bridge.
 console_bridge_DIR:PATH=/usr/lib/x86_64-linux-gnu/console_bridge/cmake
 
+//Value Computed by CMake
+costmap_2d_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/costmap_2d
+
 //The directory containing a CMake configuration file for costmap_2d.
-costmap_2d_DIR:PATH=costmap_2d_DIR-NOTFOUND
+costmap_2d_DIR:PATH=/home/morin-sol/ME652/devel/share/costmap_2d/cmake
+
+//Dependencies for the target
+costmap_2d_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;tf2;general;voxel_grid;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+costmap_2d_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/costmap_2d
 
 //The directory containing a CMake configuration file for cpp_common.
 cpp_common_DIR:PATH=/opt/ros/melodic/share/cpp_common/cmake
 
 //The directory containing a CMake configuration file for cv_bridge.
 cv_bridge_DIR:PATH=/opt/ros/melodic/share/cv_bridge/cmake
+
+//The directory containing a CMake configuration file for diagnostic_msgs.
+diagnostic_msgs_DIR:PATH=/opt/ros/melodic/share/diagnostic_msgs/cmake
+
+//The directory containing a CMake configuration file for diagnostic_updater.
+diagnostic_updater_DIR:PATH=/opt/ros/melodic/share/diagnostic_updater/cmake
+
+//Value Computed by CMake
+dwa_local_planner_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/dwa_local_planner
+
+//Dependencies for the target
+dwa_local_planner_LIB_DEPENDS:STATIC=general;base_local_planner;general;trajectory_planner_ros;general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+dwa_local_planner_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/dwa_local_planner
 
 //The directory containing a CMake configuration file for dynamic_reconfigure.
 dynamic_reconfigure_DIR:PATH=/opt/ros/melodic/share/dynamic_reconfigure/cmake
@@ -1066,6 +1192,12 @@ explore_lite_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/m-explore/explore
 
 //Value Computed by CMake
 explore_lite_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/m-explore/explore
+
+//Value Computed by CMake
+fake_localization_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/fake_localization
+
+//Value Computed by CMake
+fake_localization_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/fake_localization
 
 //The directory containing a CMake configuration file for gazebo.
 gazebo_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/gazebo
@@ -1108,6 +1240,15 @@ geometry_msgs_DIR:PATH=/opt/ros/melodic/share/geometry_msgs/cmake
 
 //Dependencies for the target
 geotiff_writer_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;Qt5::Widgets;
+
+//Value Computed by CMake
+global_planner_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/global_planner
+
+//Dependencies for the target
+global_planner_LIB_DEPENDS:STATIC=general;navfn;general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+global_planner_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/global_planner
 
 //Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/gtest/googlemock
@@ -1224,7 +1365,8 @@ hector_mapping_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/hector_slam/hector_ma
 //Value Computed by CMake
 hector_marker_drawing_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/hector_slam/hector_marker_drawing
 
-hector_marker_drawing_DIR:PATH=
+//The directory containing a CMake configuration file for hector_marker_drawing.
+hector_marker_drawing_DIR:PATH=/home/morin-sol/ME652/devel/share/hector_marker_drawing/cmake
 
 //Value Computed by CMake
 hector_marker_drawing_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/hector_slam/hector_marker_drawing
@@ -1286,6 +1428,9 @@ ignition-msgs1_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/ignition-msgs1
 //The directory containing a CMake configuration file for ignition-transport4.
 ignition-transport4_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/ignition-transport4
 
+//The directory containing a CMake configuration file for image_geometry.
+image_geometry_DIR:PATH=/opt/ros/melodic/share/image_geometry/cmake
+
 //The directory containing a CMake configuration file for image_transport.
 image_transport_DIR:PATH=/opt/ros/melodic/share/image_transport/cmake
 
@@ -1301,6 +1446,9 @@ jsoncpp_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/jsoncpp
 //The directory containing a CMake configuration file for laser_geometry.
 laser_geometry_DIR:PATH=/opt/ros/melodic/share/laser_geometry/cmake
 
+//Dependencies for the target
+layers_LIB_DEPENDS:STATIC=general;costmap_2d;
+
 //Path to a library.
 lib:FILEPATH=/opt/ros/melodic/lib/libxmlrpcpp.so
 
@@ -1309,6 +1457,24 @@ map_generate_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/map_generate
 
 //Value Computed by CMake
 map_generate_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/map_generate
+
+//Value Computed by CMake
+map_msgs_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation_msgs/map_msgs
+
+//The directory containing a CMake configuration file for map_msgs.
+map_msgs_DIR:PATH=/home/morin-sol/ME652/devel/share/map_msgs/cmake
+
+//Value Computed by CMake
+map_msgs_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation_msgs/map_msgs
+
+//Value Computed by CMake
+map_server_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/map_server
+
+//Value Computed by CMake
+map_server_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/map_server
+
+//Dependencies for the target
+map_server_image_loader_LIB_DEPENDS:STATIC=general;BulletSoftBody;general;BulletDynamics;general;BulletCollision;general;LinearMath;general;/usr/lib/x86_64-linux-gnu/libBulletDynamics.so;general;/usr/lib/x86_64-linux-gnu/libBulletCollision.so;general;/usr/lib/x86_64-linux-gnu/libLinearMath.so;general;/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;/usr/lib/x86_64-linux-gnu/libSDLmain.a;general;/usr/lib/x86_64-linux-gnu/libSDL.so;general;-lpthread;general;/usr/lib/x86_64-linux-gnu/libSDL_image.so;
 
 //The directory containing a CMake configuration file for message_filters.
 message_filters_DIR:PATH=/opt/ros/melodic/share/message_filters/cmake
@@ -1319,8 +1485,68 @@ message_generation_DIR:PATH=/opt/ros/melodic/share/message_generation/cmake
 //The directory containing a CMake configuration file for message_runtime.
 message_runtime_DIR:PATH=/opt/ros/melodic/share/message_runtime/cmake
 
+//Value Computed by CMake
+move_base_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/move_base
+
+//Dependencies for the target
+move_base_LIB_DEPENDS:STATIC=general;base_local_planner;general;trajectory_planner_ros;general;clear_costmap_recovery;general;navfn;general;rotate_recovery;general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+move_base_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/move_base
+
+//Value Computed by CMake
+move_base_msgs_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation_msgs/move_base_msgs
+
+//The directory containing a CMake configuration file for move_base_msgs.
+move_base_msgs_DIR:PATH=/home/morin-sol/ME652/devel/share/move_base_msgs/cmake
+
+//Value Computed by CMake
+move_base_msgs_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation_msgs/move_base_msgs
+
+//Value Computed by CMake
+move_slow_and_clear_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/move_slow_and_clear
+
+//Dependencies for the target
+move_slow_and_clear_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;tf2;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+move_slow_and_clear_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/move_slow_and_clear
+
+//Value Computed by CMake
+multirobot_map_merge_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/m-explore/map_merge
+
+//Value Computed by CMake
+multirobot_map_merge_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/m-explore/map_merge
+
+//Value Computed by CMake
+nav_core_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/nav_core
+
+//The directory containing a CMake configuration file for nav_core.
+nav_core_DIR:PATH=/home/morin-sol/ME652/devel/share/nav_core/cmake
+
+//Value Computed by CMake
+nav_core_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/nav_core
+
 //The directory containing a CMake configuration file for nav_msgs.
 nav_msgs_DIR:PATH=/opt/ros/melodic/share/nav_msgs/cmake
+
+//Value Computed by CMake
+navfn_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/navfn
+
+//The directory containing a CMake configuration file for navfn.
+navfn_DIR:PATH=/home/morin-sol/ME652/devel/share/navfn/cmake
+
+//Dependencies for the target
+navfn_LIB_DEPENDS:STATIC=general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+navfn_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/navfn
+
+//Value Computed by CMake
+navigation_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/navigation
+
+//Value Computed by CMake
+navigation_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/navigation
 
 //The directory containing a CMake configuration file for nodelet.
 nodelet_DIR:PATH=/opt/ros/melodic/share/nodelet/cmake
@@ -1330,6 +1556,9 @@ nodelet_topic_tools_DIR:PATH=/opt/ros/melodic/share/nodelet_topic_tools/cmake
 
 //Path to a library.
 onelib:FILEPATH=/usr/lib/x86_64-linux-gnu/libsdformat.so
+
+//The directory containing a CMake configuration file for orocos_kdl.
+orocos_kdl_DIR:PATH=/opt/ros/melodic/share/orocos_kdl/cmake
 
 //The directory containing a CMake configuration file for pcl_conversions.
 pcl_conversions_DIR:PATH=/opt/ros/melodic/share/pcl_conversions/cmake
@@ -1376,6 +1605,9 @@ rosgraph_DIR:PATH=/opt/ros/melodic/share/rosgraph/cmake
 //The directory containing a CMake configuration file for rosgraph_msgs.
 rosgraph_msgs_DIR:PATH=/opt/ros/melodic/share/rosgraph_msgs/cmake
 
+//The directory containing a CMake configuration file for roslaunch.
+roslaunch_DIR:PATH=/opt/ros/melodic/share/roslaunch/cmake
+
 //The directory containing a CMake configuration file for roslib.
 roslib_DIR:PATH=/opt/ros/melodic/share/roslib/cmake
 
@@ -1393,6 +1625,18 @@ rostest_DIR:PATH=/opt/ros/melodic/share/rostest/cmake
 
 //The directory containing a CMake configuration file for rostime.
 rostime_DIR:PATH=/opt/ros/melodic/share/rostime/cmake
+
+//Value Computed by CMake
+rotate_recovery_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/rotate_recovery
+
+//The directory containing a CMake configuration file for rotate_recovery.
+rotate_recovery_DIR:PATH=/home/morin-sol/ME652/devel/share/rotate_recovery/cmake
+
+//Dependencies for the target
+rotate_recovery_LIB_DEPENDS:STATIC=general;base_local_planner;general;trajectory_planner_ros;general;costmap_2d;general;layers;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/liblaser_geometry.so;general;/opt/ros/melodic/lib/libtf.so;general;voxel_grid;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/liborocos-kdl.so;general;/opt/ros/melodic/lib/liborocos-kdl.so.1.4.0;general;tf2_ros;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+rotate_recovery_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/rotate_recovery
 
 //The directory containing a CMake configuration file for sensor_msgs.
 sensor_msgs_DIR:PATH=/opt/ros/melodic/share/sensor_msgs/cmake
@@ -1413,6 +1657,12 @@ std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake
 std_srvs_DIR:PATH=/opt/ros/melodic/share/std_srvs/cmake
 
 //Value Computed by CMake
+test_tf2_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/test_tf2
+
+//Value Computed by CMake
+test_tf2_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/test_tf2
+
+//Value Computed by CMake
 tf2_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2
 
 //The directory containing a CMake configuration file for tf2.
@@ -1427,16 +1677,38 @@ tf2_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2
 //Value Computed by CMake
 tf2_bullet_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_bullet
 
+//The directory containing a CMake configuration file for tf2_bullet.
+tf2_bullet_DIR:PATH=/home/morin-sol/ME652/devel/share/tf2_bullet/cmake
+
 //Value Computed by CMake
 tf2_bullet_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_bullet
 
 //Value Computed by CMake
 tf2_eigen_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_eigen
 
-tf2_eigen_DIR:PATH=
+//The directory containing a CMake configuration file for tf2_eigen.
+tf2_eigen_DIR:PATH=/home/morin-sol/ME652/devel/share/tf2_eigen/cmake
 
 //Value Computed by CMake
 tf2_eigen_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_eigen
+
+//Value Computed by CMake
+tf2_geometry_msgs_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_geometry_msgs
+
+//The directory containing a CMake configuration file for tf2_geometry_msgs.
+tf2_geometry_msgs_DIR:PATH=/home/morin-sol/ME652/devel/share/tf2_geometry_msgs/cmake
+
+//Value Computed by CMake
+tf2_geometry_msgs_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_geometry_msgs
+
+//Value Computed by CMake
+tf2_kdl_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_kdl
+
+//The directory containing a CMake configuration file for tf2_kdl.
+tf2_kdl_DIR:PATH=/home/morin-sol/ME652/devel/share/tf2_kdl/cmake
+
+//Value Computed by CMake
+tf2_kdl_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_kdl
 
 //Value Computed by CMake
 tf2_msgs_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_msgs
@@ -1462,13 +1734,29 @@ tf2_py_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_p
 //Value Computed by CMake
 tf2_ros_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_ros
 
-tf2_ros_DIR:PATH=
+//The directory containing a CMake configuration file for tf2_ros.
+tf2_ros_DIR:PATH=/home/morin-sol/ME652/devel/share/tf2_ros/cmake
 
 //Dependencies for the target
 tf2_ros_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;tf2;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
 
 //Value Computed by CMake
 tf2_ros_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_ros
+
+//Value Computed by CMake
+tf2_sensor_msgs_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_sensor_msgs
+
+//The directory containing a CMake configuration file for tf2_sensor_msgs.
+tf2_sensor_msgs_DIR:PATH=/home/morin-sol/ME652/devel/share/tf2_sensor_msgs/cmake
+
+//Value Computed by CMake
+tf2_sensor_msgs_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_sensor_msgs
+
+//Value Computed by CMake
+tf2_tools_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/geometry2-melodic-devel/tf2_tools
+
+//Value Computed by CMake
+tf2_tools_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/geometry2-melodic-devel/tf2_tools
 
 //The directory containing a CMake configuration file for tf.
 tf_DIR:PATH=/opt/ros/melodic/share/tf/cmake
@@ -1479,11 +1767,26 @@ topic_tools_DIR:PATH=/opt/ros/melodic/share/topic_tools/cmake
 //The directory containing a CMake configuration file for trajectory_msgs.
 trajectory_msgs_DIR:PATH=/opt/ros/melodic/share/trajectory_msgs/cmake
 
+//Dependencies for the target
+trajectory_planner_ros_LIB_DEPENDS:STATIC=general;base_local_planner;
+
 //The directory containing a CMake configuration file for urdf.
 urdf_DIR:PATH=/opt/ros/melodic/share/urdf/cmake
 
 //The directory containing a CMake configuration file for visualization_msgs.
 visualization_msgs_DIR:PATH=/opt/ros/melodic/share/visualization_msgs/cmake
+
+//Value Computed by CMake
+voxel_grid_BINARY_DIR:STATIC=/home/morin-sol/ME652/build/navigation/voxel_grid
+
+//The directory containing a CMake configuration file for voxel_grid.
+voxel_grid_DIR:PATH=/home/morin-sol/ME652/devel/share/voxel_grid/cmake
+
+//Dependencies for the target
+voxel_grid_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
+
+//Value Computed by CMake
+voxel_grid_SOURCE_DIR:STATIC=/home/morin-sol/ME652/src/navigation/voxel_grid
 
 //The directory containing a CMake configuration file for xacro.
 xacro_DIR:PATH=/opt/ros/melodic/share/xacro/cmake
@@ -1631,6 +1934,14 @@ AVUTIL_libavutil_VERSION:INTERNAL=
 BULLET_CFLAGS:INTERNAL=-I/usr/include/bullet
 BULLET_CFLAGS_I:INTERNAL=
 BULLET_CFLAGS_OTHER:INTERNAL=
+//ADVANCED property for variable: BULLET_COLLISION_LIBRARY
+BULLET_COLLISION_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: BULLET_COLLISION_LIBRARY_DEBUG
+BULLET_COLLISION_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: BULLET_DYNAMICS_LIBRARY
+BULLET_DYNAMICS_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: BULLET_DYNAMICS_LIBRARY_DEBUG
+BULLET_DYNAMICS_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 BULLET_FOUND:INTERNAL=1
 BULLET_INCLUDEDIR:INTERNAL=
 BULLET_INCLUDE_DIRS:INTERNAL=/usr/include/bullet
@@ -1643,7 +1954,15 @@ BULLET_LIBS:INTERNAL=
 BULLET_LIBS_L:INTERNAL=
 BULLET_LIBS_OTHER:INTERNAL=
 BULLET_LIBS_PATHS:INTERNAL=
+//ADVANCED property for variable: BULLET_MATH_LIBRARY
+BULLET_MATH_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: BULLET_MATH_LIBRARY_DEBUG
+BULLET_MATH_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 BULLET_PREFIX:INTERNAL=
+//ADVANCED property for variable: BULLET_SOFTBODY_LIBRARY
+BULLET_SOFTBODY_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: BULLET_SOFTBODY_LIBRARY_DEBUG
+BULLET_SOFTBODY_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 BULLET_STATIC_CFLAGS:INTERNAL=-I/usr/include/bullet
 BULLET_STATIC_CFLAGS_I:INTERNAL=
 BULLET_STATIC_CFLAGS_OTHER:INTERNAL=
@@ -1819,7 +2138,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=23
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=56
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1878,6 +2197,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_AVDEVICE:INTERNAL=[true][v(56.4.100)]
 FIND_PACKAGE_MESSAGE_DETAILS_AVFORMAT:INTERNAL=[true][v()]
 //Details about finding AVUTIL
 FIND_PACKAGE_MESSAGE_DETAILS_AVUTIL:INTERNAL=[true][v()]
+//Details about finding Bullet
+FIND_PACKAGE_MESSAGE_DETAILS_Bullet:INTERNAL=[/usr/lib/x86_64-linux-gnu/libBulletDynamics.so][/usr/lib/x86_64-linux-gnu/libBulletCollision.so][/usr/lib/x86_64-linux-gnu/libLinearMath.so][/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so][/usr/include/bullet][v()]
 //Details about finding CURL
 FIND_PACKAGE_MESSAGE_DETAILS_CURL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libcurl.so][/usr/include/x86_64-linux-gnu][v7.58.0()]
 //Details about finding DL
@@ -1952,6 +2273,10 @@ FIND_PACKAGE_MESSAGE_DETAILS_Protobuf:INTERNAL=[/usr/lib/x86_64-linux-gnu/libpro
 FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python2][v2.7.17()]
 //Details about finding PythonLibs
 FIND_PACKAGE_MESSAGE_DETAILS_PythonLibs:INTERNAL=[/usr/lib/x86_64-linux-gnu/libpython2.7.so][/usr/include/python2.7][v2.7.17(2)]
+//Details about finding SDL
+FIND_PACKAGE_MESSAGE_DETAILS_SDL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDLmain.a;/usr/lib/x86_64-linux-gnu/libSDL.so;-lpthread][/usr/include/SDL][v1.2.15()]
+//Details about finding SDL_image
+FIND_PACKAGE_MESSAGE_DETAILS_SDL_image:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDL_image.so][/usr/include/SDL][v1.2.12()]
 //Details about finding SWSCALE
 FIND_PACKAGE_MESSAGE_DETAILS_SWSCALE:INTERNAL=[true][v()]
 //Details about finding Simbody
@@ -2031,6 +2356,12 @@ GTS_gts_INCLUDEDIR:INTERNAL=
 GTS_gts_LIBDIR:INTERNAL=
 GTS_gts_PREFIX:INTERNAL=
 GTS_gts_VERSION:INTERNAL=
+//Have symbol drand48
+HAVE_DRAND48:INTERNAL=1
+//Have include sys/time.h
+HAVE_SYS_TIME_H:INTERNAL=1
+//Have include unistd.h
+HAVE_UNISTD_H:INTERNAL=1
 JSONCPP_CFLAGS:INTERNAL=-I/usr/include/jsoncpp
 JSONCPP_CFLAGS_I:INTERNAL=
 JSONCPP_CFLAGS_OTHER:INTERNAL=
@@ -2064,6 +2395,10 @@ JSONCPP_jsoncpp_INCLUDEDIR:INTERNAL=
 JSONCPP_jsoncpp_LIBDIR:INTERNAL=
 JSONCPP_jsoncpp_PREFIX:INTERNAL=
 JSONCPP_jsoncpp_VERSION:INTERNAL=
+//Have include FL/Fl.H
+NAVFN_HAVE_FLTK:INTERNAL=1
+//Have include pgm.h
+NAVFN_HAVE_NETPBM:INTERNAL=
 //ADVANCED property for variable: OGRE_CONFIG_INCLUDE_DIR
 OGRE_CONFIG_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OGRE_INCLUDE_DIR
@@ -2506,6 +2841,12 @@ Protobuf_PROTOC_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 RSSDK_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: RSSDK_LIBRARY_DEBUG
 RSSDK_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL_IMAGE_INCLUDE_DIR
+SDL_IMAGE_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SDL_IMAGE_LIBRARY
+SDL_IMAGE_LIBRARY-ADVANCED:INTERNAL=1
+//Path to a library.
+SDL_LIBRARY_TEMP:INTERNAL=/usr/lib/x86_64-linux-gnu/libSDL.so
 SWSCALE_CFLAGS:INTERNAL=-I/usr/include/x86_64-linux-gnu
 SWSCALE_CFLAGS_I:INTERNAL=
 SWSCALE_CFLAGS_OTHER:INTERNAL=
@@ -2609,6 +2950,40 @@ UUID_uuid_INCLUDEDIR:INTERNAL=
 UUID_uuid_LIBDIR:INTERNAL=
 UUID_uuid_PREFIX:INTERNAL=
 UUID_uuid_VERSION:INTERNAL=
+YAMLCPP_CFLAGS:INTERNAL=
+YAMLCPP_CFLAGS_I:INTERNAL=
+YAMLCPP_CFLAGS_OTHER:INTERNAL=
+YAMLCPP_FOUND:INTERNAL=1
+YAMLCPP_INCLUDEDIR:INTERNAL=/usr/include
+YAMLCPP_INCLUDE_DIRS:INTERNAL=
+YAMLCPP_LDFLAGS:INTERNAL=-lyaml-cpp
+YAMLCPP_LDFLAGS_OTHER:INTERNAL=
+YAMLCPP_LIBDIR:INTERNAL=
+YAMLCPP_LIBRARIES:INTERNAL=yaml-cpp
+YAMLCPP_LIBRARY_DIRS:INTERNAL=
+YAMLCPP_LIBS:INTERNAL=
+YAMLCPP_LIBS_L:INTERNAL=
+YAMLCPP_LIBS_OTHER:INTERNAL=
+YAMLCPP_LIBS_PATHS:INTERNAL=
+YAMLCPP_PREFIX:INTERNAL=/usr
+YAMLCPP_STATIC_CFLAGS:INTERNAL=
+YAMLCPP_STATIC_CFLAGS_I:INTERNAL=
+YAMLCPP_STATIC_CFLAGS_OTHER:INTERNAL=
+YAMLCPP_STATIC_INCLUDE_DIRS:INTERNAL=
+YAMLCPP_STATIC_LDFLAGS:INTERNAL=-lyaml-cpp
+YAMLCPP_STATIC_LDFLAGS_OTHER:INTERNAL=
+YAMLCPP_STATIC_LIBDIR:INTERNAL=
+YAMLCPP_STATIC_LIBRARIES:INTERNAL=yaml-cpp
+YAMLCPP_STATIC_LIBRARY_DIRS:INTERNAL=
+YAMLCPP_STATIC_LIBS:INTERNAL=
+YAMLCPP_STATIC_LIBS_L:INTERNAL=
+YAMLCPP_STATIC_LIBS_OTHER:INTERNAL=
+YAMLCPP_STATIC_LIBS_PATHS:INTERNAL=
+YAMLCPP_VERSION:INTERNAL=0.5.2
+YAMLCPP_yaml-cpp_INCLUDEDIR:INTERNAL=
+YAMLCPP_yaml-cpp_LIBDIR:INTERNAL=
+YAMLCPP_yaml-cpp_PREFIX:INTERNAL=
+YAMLCPP_yaml-cpp_VERSION:INTERNAL=
 YAML_CFLAGS:INTERNAL=
 YAML_CFLAGS_I:INTERNAL=
 YAML_CFLAGS_OTHER:INTERNAL=
@@ -2736,6 +3111,7 @@ __pkg_config_arguments_SWSCALE:INTERNAL=libswscale
 __pkg_config_arguments_TINYXML2:INTERNAL=tinyxml2
 __pkg_config_arguments_UUID:INTERNAL=uuid
 __pkg_config_arguments_YAML:INTERNAL=yaml-0.1
+__pkg_config_arguments_YAMLCPP:INTERNAL=yaml-cpp;QUIET
 __pkg_config_arguments_ZIP:INTERNAL=libzip
 __pkg_config_arguments_ZeroMQ:INTERNAL=libzmq >= 4
 __pkg_config_arguments_bullet:INTERNAL=bullet
@@ -2755,6 +3131,7 @@ __pkg_config_checked_SWSCALE:INTERNAL=1
 __pkg_config_checked_TINYXML2:INTERNAL=1
 __pkg_config_checked_UUID:INTERNAL=1
 __pkg_config_checked_YAML:INTERNAL=1
+__pkg_config_checked_YAMLCPP:INTERNAL=1
 __pkg_config_checked_ZIP:INTERNAL=1
 __pkg_config_checked_ZeroMQ:INTERNAL=1
 __pkg_config_checked_bullet:INTERNAL=1
@@ -2792,5 +3169,5 @@ bullet_bullet_INCLUDEDIR:INTERNAL=
 bullet_bullet_LIBDIR:INTERNAL=
 bullet_bullet_PREFIX:INTERNAL=
 bullet_bullet_VERSION:INTERNAL=
-prefix_result:INTERNAL=
+prefix_result:INTERNAL=/usr/lib/x86_64-linux-gnu
 
