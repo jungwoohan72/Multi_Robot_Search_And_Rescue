@@ -24,7 +24,7 @@ class InitialPoseGenerator:
         robot2_initial = PoseWithCovarianceStamped()
         robot3_initial = PoseWithCovarianceStamped()
 
-        robot1_initial.header.frame_id = "robot1/Lidar"
+        robot1_initial.header.frame_id = "robot1/base_link"
         robot1_initial.pose.pose.position.x = -7.4
         robot1_initial.pose.pose.position.y = -5.5
         robot1_initial.pose.pose.position.z = 0
@@ -33,7 +33,7 @@ class InitialPoseGenerator:
         robot1_initial.pose.pose.orientation.y = 0
         robot1_initial.pose.pose.orientation.z = 0.707
 
-        robot2_initial.header.frame_id = "robot2/Lidar"
+        robot2_initial.header.frame_id = "robot2/base_link"
         robot2_initial.pose.pose.position.x = -7.5
         robot2_initial.pose.pose.position.y = 15.5
         robot2_initial.pose.pose.position.z = 0
@@ -42,14 +42,14 @@ class InitialPoseGenerator:
         robot2_initial.pose.pose.orientation.y = 0
         robot2_initial.pose.pose.orientation.z = -0.707
 
-        robot3_initial.header.frame_id = "robot3/Lidar"
-        robot3_initial.pose.pose.position.x = 35
-        robot3_initial.pose.pose.position.y = 9
+        robot3_initial.header.frame_id = "robot3/base_link"
+        robot3_initial.pose.pose.position.x = 23.701897
+        robot3_initial.pose.pose.position.y = 5.219147
         robot3_initial.pose.pose.position.z = 0
-        robot3_initial.pose.pose.orientation.w = 0
+        robot3_initial.pose.pose.orientation.w = 0.707
         robot3_initial.pose.pose.orientation.x = 0
         robot3_initial.pose.pose.orientation.y = 0
-        robot3_initial.pose.pose.orientation.z = 1
+        robot3_initial.pose.pose.orientation.z = 0.707
 
         self.pub1.publish(robot1_initial)
         self.pub2.publish(robot2_initial)

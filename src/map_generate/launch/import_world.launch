@@ -32,7 +32,7 @@
     </group>
 
     <group ns="robot3">
-        <node name="$(arg robot3_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot3 -x 35 -y 9 -Y 3.14"/>
+        <node name="$(arg robot3_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot3 -x 23.701897 -y 5.219147 -Y 1.57"/>
     </group>
 
 </launch>
