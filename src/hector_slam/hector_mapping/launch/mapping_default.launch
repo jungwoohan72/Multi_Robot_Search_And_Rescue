@@ -10,7 +10,7 @@
   <!--arg name="mapTopic_" default="map"/-->
   <arg name="map_size" default="2048"/>
 
-  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping1" output="screen">
+  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
 
     <!-- Frame names -->
     <param name="map_frame" value="map" /> <!--param name="map_frame" value="map" /-->
