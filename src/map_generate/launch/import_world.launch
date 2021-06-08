@@ -45,7 +45,7 @@
       <param name="init_pose_x" value="-7.5"/>
       <param name="init_pose_y" value="15.5"/>
       <param name="init_pose_z" value="0.0"/>
-      <param name="init_pose_yaw" value="-1.57"/>
+      <param name="init_pose_yaw" value="1.57"/>
     </group>
     <group ns="/robot3/map_merge">
       <param name="init_pose_x" value="23.701897"/>
