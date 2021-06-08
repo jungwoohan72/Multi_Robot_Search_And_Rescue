@@ -163,10 +163,10 @@ HectorMappingRos::HectorMappingRos(int i)
     tmp.mapPublisher_ = node_.advertise<nav_msgs::OccupancyGrid>(mapTopicStr, 1, true);
     tmp.mapMetadataPublisher_ = node_.advertise<nav_msgs::MapMetaData>(mapMetaTopicStr, 1, true);
 
-    if ( (i == 0) && p_advertise_map_service_)
-    {
-      tmp.dynamicMapServiceServer_ = node_.advertiseService("dynamic_map", &HectorMappingRos::mapCallback, this);
-    }
+    // if ( (i == 0) && p_advertise_map_service_)
+    // {
+    //   // tmp.dynamicMapServiceServer_ = node_.advertiseService("dynamic_map", &HectorMappingRos::mapCallback, this);
+    // }
 
     setServiceGetMapData(tmp.map_, slamProcessor->getGridMap(i));
 
@@ -176,9 +176,9 @@ HectorMappingRos::HectorMappingRos(int i)
   }
 
   // Initialize services
-  reset_map_service_ = node_.advertiseService("reset_map", &HectorMappingRos::resetMapCallback, this);
-  restart_hector_service_ = node_.advertiseService("restart_mapping_with_new_pose", &HectorMappingRos::restartHectorCallback, this);
-  toggle_scan_processing_service_ = node_.advertiseService("pause_mapping", &HectorMappingRos::pauseMapCallback, this);
+  // reset_map_service_ = node_.advertiseService("reset_map", &HectorMappingRos::resetMapCallback, this);
+  // restart_hector_service_ = node_.advertiseService("restart_mapping_with_new_pose", &HectorMappingRos::restartHectorCallback, this);
+  // toggle_scan_processing_service_ = node_.advertiseService("pause_mapping", &HectorMappingRos::pauseMapCallback, this);
 
   ROS_INFO("HectorSM p_base_frame_: %s", p_base_frame_.c_str());
   ROS_INFO("HectorSM p_map_frame_: %s", p_map_frame_.c_str());
