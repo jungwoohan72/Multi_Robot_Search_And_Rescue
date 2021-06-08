@@ -36,7 +36,7 @@ current = np.zeros(2)
 class Planner(multiprocessing.Process):
     def __init__(self, i):
         super(Planner, self).__init__()
-        self.map_sub = rospy.Subscriber("/map"+str(i), OccupancyGrid, self.map_cb, queue_size=1)
+        self.map_sub = rospy.Subscriber("/robot"+str(i)+"/map", OccupancyGrid, self.map_cb, queue_size=1)
         self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = np.zeros((h,w))
         self.cnt = i
@@ -56,7 +56,6 @@ class Planner(multiprocessing.Process):
         temp = np.array(input, dtype=np.uint8)
         map = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3))
         self.map = map
-        cv.imshow('map'+str(self.cnt), map)
         self.local2world()
     
     def local2world(self):
@@ -93,26 +92,31 @@ class Planner(multiprocessing.Process):
         # path, g, rhs = dstar.move_and_replan(robot_position=current)
 
         # gui.run_game(path=path)
+        k += 1
+        if k%10 == 0:
+            cv.imshow('map'+str(self.cnt)+'-'+str(k), self.map)
+
         self.control()
 
     def control(self):
         # Calculate control input to publish
-        ctrl = Twist()
+        # ctrl = Twist()
 
-        ctrl.linear.x = 0.5
-        ctrl.linear.y = 0.0
-        ctrl.linear.z = 0.0
+        # ctrl.linear.x = 0.5
+        # ctrl.linear.y = 0.0
+        # ctrl.linear.z = 0.0
 
-        ctrl.angular.x = 0.0
-        ctrl.angular.y = 0.0
-        ctrl.angular.z = 0.0
+        # ctrl.angular.x = 0.0
+        # ctrl.angular.y = 0.0
+        # ctrl.angular.z = 0.0
 
-        print("publish"+str(i))
-        self.ctrl_pub.publish(ctrl)
+        # print("publish"+str(self.cnt))
+        # self.ctrl_pub.publish(ctrl)
+        pass
 
     def main(self):
         try:
-            rate = rospy.Rate(30)
+            rate = rospy.Rate(5)
             self.planning()
             rate.sleep()
 
