@@ -23,7 +23,7 @@ class InitialPoseGenerator:
         # self.pub21 = rospy.Publisher('/robot2/scan', LaserScan, queue_size=100)
         # self.pub31 = rospy.Publisher('/robot3/scan', LaserScan, queue_size=100)
 
-        self.rate = rospy.Rate(0.5)
+        self.rate = rospy.Rate(1)
 
     def initial_pose_publish(self):
         # robot1_scan = LaserScan()
