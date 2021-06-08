@@ -32,13 +32,12 @@ k = 0; h = 512; w = 512
 start = np.zeros(2)
 goal = np.zeros(2)
 current = np.zeros(2)
-g_map = np.zeros((h,w))
 
 class Planner(multiprocessing.Process):
     def __init__(self, i):
         super(Planner, self).__init__()
         global h, w
-        self.map_sub = rospy.Subscriber("/robot"+str(i)+"/map", OccupancyGrid, self.map_cb, queue_size=1)
+        self.map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, self.map_cb, queue_size=1)
         self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = np.zeros((h,w))
         self.cnt = i
@@ -58,15 +57,6 @@ class Planner(multiprocessing.Process):
         temp = np.array(input, dtype=np.uint8)
         map = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3))
         self.map = map
-        self.local2world()
-    
-    def local2world(self):
-        # transform local map to world map
-        global g_map, k, h, w
-        for i in range(h):
-            for j in range(w):
-                if not g_map[i, j] and self.map[i, j]:
-                    g_map[i, j] += self.map[i, j]
 
     def planning(self):
         """
@@ -77,7 +67,7 @@ class Planner(multiprocessing.Process):
         V (x=2, y=0)
         x, row
         """
-        global start, goal, current, k, h, w, g_map
+        global start, goal, current, k, h, w
 
         # gui = Animation(title="D* Lite Path Planning",
         #                 width=10,
@@ -98,9 +88,7 @@ class Planner(multiprocessing.Process):
 
         # gui.run_game(path=path)
         k += 1
-        if k%10 == 0:
-            cv.imshow('map'+str(self.cnt)+'-'+str(k), self.map)
-            cv.imshow('map'+str(k), g_map)
+        cv.imshow('map'+str(k), self.map)
 
         self.control()
 
@@ -122,7 +110,7 @@ class Planner(multiprocessing.Process):
 
     def main(self):
         try:
-            rate = rospy.Rate(5)
+            rate = rospy.Rate(1.5)
             self.planning()
             rate.sleep()
 
