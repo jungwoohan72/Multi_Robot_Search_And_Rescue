@@ -27,14 +27,14 @@ TRAJ = 2
 OBSTACLE = 255
 
 # Global variable
-g_map = np.zeros((128, 128), dtype=np.uint8)
+g_map = np.zeros((128, 128), dtype=np.uint8) # 512, 512
 
 def map_cb(msgs):
     global g_map
     h = msgs.info.height
     w = msgs.info.width
     input = np.transpose(np.reshape(msgs.data, (h,w)))
-    batch = 16
+    batch = 16 # 4
     for i in range(h):
         for j in range(w):
             if input[i, j] == 100:
@@ -114,8 +114,8 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-        init_pose = 64*np.ones((6)) + np.array([-2, -1, -2, 4, 8, 2])
-        goal = 64*np.ones((2)) + np.array([5, -1])
+        init_pose = 64*np.ones((6)) + np.array([-2, -1, -2, 4, 8, 2]) # 256 / -7, -5, -7, 16, 24, 6
+        goal = 64*np.ones((2)) + np.array([5, -1]) # 256 / 20, -2
         for i in range(1, 4):
             globals()['p{}'.format(i)] = Planner(i, init_pose[2*i-2:2*i], goal)
             globals()['p{}'.format(i)].start()
