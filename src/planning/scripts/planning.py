@@ -59,7 +59,7 @@ class Planner():
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.map = OccupancyGridMap(int(512/n), int(512/n))
-        self.slam = SLAM(map=self.map, view_range=int(5*4/n))
+        self.slam = SLAM(map=self.map, view_range=int(5*5/n))
         self.dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
         self.path = OccupancyGridMap(int(512/n), int(512/n))
         self.way = []
@@ -96,6 +96,7 @@ class Planner():
             flag = False
 
         if self.curr_pose != self.prev_pose and not self.first:
+            print(self.curr_pose, self.prev_pose)
             self.prev_pose = self.curr_pose
 
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
