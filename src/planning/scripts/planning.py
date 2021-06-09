@@ -9,8 +9,6 @@ from grid import OccupancyGridMap, SLAM
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 
-import pdb
-
 # Define some colors
 BLACK = (0, 0, 0)  # BLACK
 UNOCCUPIED = (255, 255, 255)  # WHITE
@@ -39,7 +37,6 @@ def map_cb(msgs):
     w = msgs.info.width
     input = np.transpose(np.reshape(msgs.data, (h,w)))
     batch = int(4*n) # 4
-    flag = False
     for i in range(h):
         for j in range(w):
             if input[i, j] != p_map[i, j]:
@@ -55,6 +52,7 @@ def map_cb(msgs):
 class Planner():
     def __init__(self, cnt, init_pose, goal):
         super(Planner, self).__init__()
+        global n
         self.init_pose = tuple(init_pose.astype(int))
         self.prev_pose = tuple(init_pose.astype(int))
         self.curr_pose = tuple(init_pose.astype(int))
@@ -74,7 +72,8 @@ class Planner():
         self.ctrl_pub = rospy.Publisher("/robot"+str(cnt)+"/cmd_vel", Twist, queue_size=10)
 
     def pose_cb(self, msgs):
-        self.curr_pose = tuple((256*np.ones((2)) + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])).astype(int))
+        global n
+        self.curr_pose = tuple(np.round(256*np.ones((2))/n + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
         self.curr_ori = msgs.pose.orientation
 
     def obtain_map(self):
@@ -94,8 +93,9 @@ class Planner():
         global n, flag
         if flag:
             self.obtain_map()
+            flag = False
 
-        if self.curr_pose != self.prev_pose or self.first:
+        if self.curr_pose != self.prev_pose or not self.first:
             self.prev_pose = self.curr_pose
 
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
@@ -105,7 +105,6 @@ class Planner():
 
             # # move and compute path
             self.way, g, rhs = self.dstar.move_and_replan(robot_position=self.curr_pose)
-            self.first = False
 
         # print(path)
         self.path.occupancy_grid_map = self.map.occupancy_grid_map
@@ -115,7 +114,8 @@ class Planner():
 
         cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
 
-        key = cv.waitKey(1000)
+        key = cv.waitKey(5000)
+        self.first = False
 
         self.control()
 
@@ -145,10 +145,10 @@ class Planner():
 
 if __name__ == '__main__':
     try:
-        rospy.init_node('planning', anonymous=True)
+        rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-        init_pose = (256*np.ones((6)) + 5*np.array([-7.51, -5.50, -7.37, 15.57, 23.57, 5.22])).astype(int) # 256 / -30, -22, -30, 62, 95, 21    -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
-        goal = 256*np.ones((2)) + 1.25*np.array([80, -8]) # 256 / 20, -2   5, -1
+        init_pose = np.round(256*np.ones((6))/n + 5*np.array([-7.4, -5.5, -7.5, 15.5, 23.701897, 5.219147])/n) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
+        goal = np.round(256*np.ones((2))/n + 5*np.array([20, -4])/n) # 256 / 20, -2   5, -1
         cnt = rospy.get_param('~cnt')
         planner = Planner(cnt, init_pose[2*cnt-2:2*cnt], goal)
         planner.main()
