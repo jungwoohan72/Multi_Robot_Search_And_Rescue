@@ -124,6 +124,8 @@ class DStarLite:
                     arg_min = s_
 
             ### algorithm sometimes gets stuck here for some reason !!! FIX
+            if arg_min is None:
+                continue
             self.s_start = arg_min
             path.append(self.s_start)
             # scan graph for changed costs
