@@ -79,10 +79,10 @@ class Planner():
         # # move and compute path
         path, g, rhs = dstar.move_and_replan(robot_position=self.curr_pose)
 
-        print(path)
-        for (x, y) in path:
-            if not g_map[x, y]:
-                g_map[x, y] = 100
+        # print(path)
+        # for (x, y) in path:
+        #     if not g_map[x, y]:
+        #         g_map[x, y] = 100
         cv.imshow("map" + str(self.cnt), np.array(g_map, dtype=np.uint8))
         key = cv.waitKey(3000)
 
