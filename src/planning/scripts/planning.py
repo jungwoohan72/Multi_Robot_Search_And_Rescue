@@ -4,7 +4,7 @@ import rospy
 import cv2 as cv
 import numpy as np
 from d_star_lite import DStarLite
-from grid import OccupancyGridMap
+from grid import OccupancyGridMap, SLAM
 
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
@@ -22,25 +22,31 @@ LOCAL_GRID = (0, 0, 80)  # BLUE
 TRAJ = (148, 191, 231)  # LIGHT BLUE
 
 UNOCCUPIED = 0
-TRAJ = 2
+TRAJ = 127
 OBSTACLE = 255
 
 # Global variable
 n = 1
+p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
 g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
+flag = False
 
 def map_cb(msgs):
-    global g_map
+    global p_map, g_map, flag
     h = msgs.info.height
     w = msgs.info.width
     input = np.transpose(np.reshape(msgs.data, (h,w)))
     batch = int(4*n) # 4
+    flag = False
     for i in range(h):
         for j in range(w):
+            if input[i, j] != p_map[i, j]:
+                flag = True
             if input[i, j] > 99:
-                input[i, j] = 255
+                input[i, j] = OBSTACLE
             else:
-                input[i, j] = 0
+                input[i, j] = UNOCCUPIED
+    p_map = input
     temp = np.array(input, dtype=np.uint8)
     g_map  = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3)).astype(int)
 
@@ -49,12 +55,17 @@ class Planner():
         super(Planner, self).__init__()
         global n
         self.init_pose = tuple(init_pose.astype(int))
+        self.prev_pose = tuple(init_pose.astype(int))
         self.curr_pose = tuple(init_pose.astype(int))
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.map = OccupancyGridMap(int(512/n), int(512/n))
+        self.slam = SLAM(map=self.map, view_range=int(5*4/n))
+        self.dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
         self.path = OccupancyGridMap(int(512/n), int(512/n))
+        self.way = []
         self.ctrl = Twist()
+        self.first = True
         self.cnt = cnt
         self.k = 0
 
@@ -69,6 +80,7 @@ class Planner():
     def obtain_map(self):
         global g_map
         self.map.occupancy_grid_map = g_map
+        self.slam.set_ground_truth_map(gt_map = self.map)
 
     def planning(self):
         """
@@ -79,20 +91,31 @@ class Planner():
         V (x=2, y=0)
         x, row
         """
-        self.obtain_map()
+        global n, flag
+        if flag:
+            self.obtain_map()
 
-        # D* Lite (optimized)
-        dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
+        if self.curr_pose != self.prev_pose or self.first:
+            self.prev_pose = self.curr_pose
 
-        # # move and compute path
-        path, g, rhs = dstar.move_and_replan(robot_position=self.curr_pose)
+            new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
 
-        print(path)
-        for (x, y) in path:
-            if not g_map[x, y]:
-                g_map[x, y] = 255
-        cv.imshow("map" + str(self.cnt), np.array(g_map, dtype=np.uint8))
-        key = cv.waitKey(3000)
+            self.dstar.new_edges_and_old_costs = new_edges_and_old_costs
+            self.dstar.sensed_map = slam_map
+
+            # # move and compute path
+            self.way, g, rhs = self.dstar.move_and_replan(robot_position=self.curr_pose)
+            self.first = False
+
+        # print(path)
+        self.path.occupancy_grid_map = self.map.occupancy_grid_map
+        for (x, y) in self.way:
+            if not self.path.occupancy_grid_map[x, y]:
+                self.path.occupancy_grid_map[x, y] = TRAJ
+
+        cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
+
+        key = cv.waitKey(1000)
 
         self.control()
 
