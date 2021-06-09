@@ -95,7 +95,7 @@ class Planner():
             self.obtain_map()
             flag = False
 
-        if self.curr_pose != self.prev_pose or not self.first:
+        if self.curr_pose != self.prev_pose and not self.first:
             self.prev_pose = self.curr_pose
 
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
