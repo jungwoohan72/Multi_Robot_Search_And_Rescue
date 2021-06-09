@@ -113,9 +113,11 @@ class Planner():
                 self.path.occupancy_grid_map[x, y] = TRAJ
 
         cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
-
-        key = cv.waitKey(5000)
-        self.first = False
+        if self.first:
+            cv.waitKey(5000)
+            self.first = False
+        else:
+            cv.waitKey(100)
 
         self.control()
 
