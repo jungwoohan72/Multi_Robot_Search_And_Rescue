@@ -75,9 +75,7 @@ class Planner(multiprocessing.Process):
         self.obtain_map()
 
         # D* Lite (optimized)
-        dstar = DStarLite(map=self.map,
-                        s_start=self.init_pose,
-                        s_goal=goal)
+        dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=goal)
 
         # # move and compute path
         path, g, rhs = dstar.move_and_replan(robot_position=self.curr_pose)
