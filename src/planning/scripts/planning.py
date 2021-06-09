@@ -26,14 +26,15 @@ TRAJ = 2
 OBSTACLE = 255
 
 # Global variable
-g_map = np.zeros((512, 512), dtype=np.uint8) # 512, 512
+n = 1
+g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
 
 def map_cb(msgs):
     global g_map
     h = msgs.info.height
     w = msgs.info.width
     input = np.transpose(np.reshape(msgs.data, (h,w)))
-    batch = 4 # 4
+    batch = int(4*n) # 4
     for i in range(h):
         for j in range(w):
             if input[i, j] > 99:
@@ -46,12 +47,13 @@ def map_cb(msgs):
 class Planner():
     def __init__(self, cnt, init_pose, goal):
         super(Planner, self).__init__()
+        global n
         self.init_pose = tuple(init_pose.astype(int))
         self.curr_pose = tuple(init_pose.astype(int))
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
-        self.map = OccupancyGridMap(512, 512)
-        self.path = OccupancyGridMap(512, 512)
+        self.map = OccupancyGridMap(int(512/n), int(512/n))
+        self.path = OccupancyGridMap(int(512/n), int(512/n))
         self.ctrl = Twist()
         self.cnt = cnt
         self.k = 0
@@ -60,7 +62,8 @@ class Planner():
         self.ctrl_pub = rospy.Publisher("/robot"+str(cnt)+"/cmd_vel", Twist, queue_size=10)
 
     def pose_cb(self, msgs):
-        self.curr_pose = tuple((256*np.ones((2)) + 4*np.array([msgs.pose.position.x, msgs.pose.position.y])).astype(int))
+        global n
+        self.curr_pose = tuple(np.round(256*np.ones((2))/n + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
         self.curr_ori = msgs.pose.orientation
 
     def obtain_map(self):
@@ -121,8 +124,8 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-        init_pose = 256*np.ones((6)) + np.array([-30, -22, -30, 62, 95, 21]) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
-        goal = 256*np.ones((2)) + np.array([80, -8]) # 256 / 20, -2   5, -1
+        init_pose = np.round(256*np.ones((6))/n + 5*np.array([-7.4, -5.5, -7.5, 15.5, 23.701897, 5.219147])/n) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
+        goal = np.round(256*np.ones((2))/n + 5*np.array([20, -4])/n) # 256 / 20, -2   5, -1
         cnt = rospy.get_param('~cnt')
         planner = Planner(cnt, init_pose[2*cnt-2:2*cnt], goal)
         planner.main()
