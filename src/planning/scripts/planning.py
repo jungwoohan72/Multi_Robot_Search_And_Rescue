@@ -54,6 +54,7 @@ class Planner(multiprocessing.Process):
         self.pose_sub = rospy.Subscriber("/robot"+str(i)+"/slam_out_pose", PoseStamped, queue_size=10)
         self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = OccupancyGridMap(512, 512)
+        self.cnt = i
 
     def pose_cb(self, msgs):
         self.curr_pose = np.array([msgs.pose.position.x, msgs.pose.position.y]).astype(int)
