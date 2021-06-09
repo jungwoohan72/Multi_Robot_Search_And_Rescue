@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import time
 import rospy
 import cv2 as cv
 import numpy as np
@@ -26,7 +27,7 @@ TRAJ = 127
 OBSTACLE = 255
 
 # Global variable
-n = 1
+n = 4
 p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
 g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
 flag = False
@@ -59,12 +60,13 @@ class Planner():
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.map = OccupancyGridMap(int(512/n), int(512/n))
-        self.slam = SLAM(map=self.map, view_range=int(5*5/n))
+        self.slam = SLAM(map=self.map, view_range=int(512/n))
         self.dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
         self.path = OccupancyGridMap(int(512/n), int(512/n))
         self.way = []
         self.ctrl = Twist()
         self.first = True
+        self.second = True
         self.cnt = cnt
         self.k = 0
 
@@ -95,7 +97,7 @@ class Planner():
             self.obtain_map()
             flag = False
 
-        if self.curr_pose != self.prev_pose and not self.first:
+        if self.curr_pose != self.prev_pose and not flag:
             self.prev_pose = self.curr_pose
 
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
@@ -105,19 +107,22 @@ class Planner():
 
             # # move and compute path
             self.way, g, rhs = self.dstar.move_and_replan(robot_position=self.curr_pose)
+            
+            self.second = False
 
-        # print(path)
-        self.path.occupancy_grid_map = self.map.occupancy_grid_map
-        for (x, y) in self.way:
-            if not self.path.occupancy_grid_map[x, y]:
-                self.path.occupancy_grid_map[x, y] = TRAJ
+            # print(path)
+            self.path.occupancy_grid_map = self.map.occupancy_grid_map
+            for (x, y) in self.way:
+                if not self.path.occupancy_grid_map[x, y]:
+                    self.path.occupancy_grid_map[x, y] = TRAJ
 
-        cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
-        if self.first:
-            cv.waitKey(5000)
-            self.first = False
-        else:
+            cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
             cv.waitKey(100)
+
+        if self.first:
+            self.first = False
+            cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
+            cv.waitKey(10000)
 
         self.control()
 
@@ -132,7 +137,6 @@ class Planner():
         self.ctrl.angular.z = 0.0
 
         self.ctrl_pub.publish(self.ctrl)
-        print("publish"+str(self.cnt))
 
     def main(self):
         try:
