@@ -43,20 +43,22 @@ def map_cb(msgs):
             else:
                 input[i, j] = 0
     temp = np.array(input, dtype=np.uint8)
-    g_map  = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3))
+    g_map  = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3)).astype(int)
 
 class Planner(multiprocessing.Process):
     def __init__(self, i, init_pose, goal):
         super(Planner, self).__init__()
-        self.init_pose = (init_pose[0], init_pose[1])
-        self.curr_pose = np.zeros((6,1))
+        self.init_pose = tuple(init_pose.astype(int))
+        self.curr_pose = tuple(np.zeros((2)).astype(int))
+        self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.pose_sub = rospy.Subscriber("/robot"+str(i)+"/slam_out_pose", PoseStamped, queue_size=10)
         self.ctrl_pub = rospy.Publisher("/robot"+str(i)+"/cmd_vel", Twist, queue_size=10)
         self.map = OccupancyGridMap(512, 512)
+        self.cnt = i
 
     def pose_cb(self, msgs):
-        self.curr_pose = np.array([msgs.pose.position.x, msgs.pose.position.y])
+        self.curr_pose = np.array([msgs.pose.position.x, msgs.pose.position.y]).astype(int)
         self.curr_ori = msgs.pose.orientation
         # pose trans
 
@@ -76,7 +78,7 @@ class Planner(multiprocessing.Process):
         self.obtain_map()
 
         # D* Lite (optimized)
-        dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=goal)
+        dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
 
         # # move and compute path
         path, g, rhs = dstar.move_and_replan(robot_position=self.curr_pose)
@@ -95,15 +97,16 @@ class Planner(multiprocessing.Process):
         ctrl.angular.y = 0.0
         ctrl.angular.z = 0.0
 
-        print("publish"+str(self.cnt))
         self.ctrl_pub.publish(ctrl)
+        print("publish"+str(self.cnt))
 
     def run(self):
         try:
+            rate = rospy.Rate(1)
             while not rospy.is_shutdown():
-                rate = rospy.Rate(3)
                 self.planning()
                 rate.sleep()
+            rospy.spin()
 
         except KeyboardInterrupt:
             pass
@@ -112,13 +115,17 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
+<<<<<<< HEAD
         init_pose = 256*np.ones((6,1)) + np.array([-7, -5, -7, 16, 24, 6])
         goal = np.add(256*np.ones((2,1)), np.mat(['20; -2']))
         pdb.set_trace()
+=======
+        init_pose = 256*np.ones((6)) + np.array([-7, -5, -7, 16, 24, 6])
+        goal = 256*np.ones((2)) + np.array([20, -2])
+>>>>>>> f13be7909c990968e29f29b9930140825488e7ca
         for i in range(1, 4):
-            globals()['p{}'.format(i)] = Planner(i, np.array(init_pose[2*i-2:2*i]), goal)
+            globals()['p{}'.format(i)] = Planner(i, init_pose[2*i-2:2*i], goal)
             globals()['p{}'.format(i)].start()
-        rospy.spin()
 
     except rospy.ROSInterruptException:
         pass
