@@ -3,8 +3,7 @@
 from priority_queue import PriorityQueue, Priority
 from grid import OccupancyGridMap
 import numpy as np
-from utils import heuristic, Vertex, Vertices
-from typing import Dict, List
+from utils import heuristic, Vertices
 
 UNOCCUPIED = 0
 OBSTACLE = 255
