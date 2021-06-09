@@ -9,6 +9,8 @@ from grid import OccupancyGridMap
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 
+import pdb
+
 # Define some colors
 BLACK = (0, 0, 0)  # BLACK
 UNOCCUPIED = (255, 255, 255)  # WHITE
@@ -60,7 +62,7 @@ class Planner():
         self.ctrl_pub = rospy.Publisher("/robot"+str(cnt)+"/cmd_vel", Twist, queue_size=10)
 
     def pose_cb(self, msgs):
-        self.curr_pose = tuple((256*np.ones((2)) + 4*np.array([msgs.pose.position.x, msgs.pose.position.y])).astype(int))
+        self.curr_pose = tuple((256*np.ones((2)) + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])).astype(int))
         self.curr_ori = msgs.pose.orientation
 
     def obtain_map(self):
@@ -78,15 +80,12 @@ class Planner():
         path, g, rhs = dstar.move_and_replan(robot_position=self.curr_pose)
 
         print(path)
-<<<<<<< HEAD
-=======
         for (x, y) in path:
             if not g_map[x, y]:
-                g_map[x, y] = 255
+                g_map[x, y] = 100
         cv.imshow("map" + str(self.cnt), np.array(g_map, dtype=np.uint8))
         key = cv.waitKey(3000)
 
->>>>>>> 71a596ec7f9d31baf918469a5b7c6a901d688a47
         self.control()
 
     def control(self):
@@ -104,11 +103,7 @@ class Planner():
 
     def main(self):
         try:
-<<<<<<< HEAD
-            rate = rospy.Rate(3)
-=======
             rate = rospy.Rate(0.5)
->>>>>>> 71a596ec7f9d31baf918469a5b7c6a901d688a47
             while not rospy.is_shutdown():
                 self.planning()
                 rate.sleep()
@@ -121,13 +116,8 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=True)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-<<<<<<< HEAD
-        init_pose = 256*np.ones((6)) + np.array([-7, -5, -7, 16, 24, 6]) # 256 / -2, -1, -2, 4, 8, 2
-        goal = 256*np.ones((2)) + np.array([20, -2]) # 256 / 5, -1
-=======
-        init_pose = 256*np.ones((6)) + np.array([-30, -22, -30, 62, 95, 21]) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
-        goal = 256*np.ones((2)) + np.array([80, -8]) # 256 / 20, -2   5, -1
->>>>>>> 71a596ec7f9d31baf918469a5b7c6a901d688a47
+        init_pose = (256*np.ones((6)) + 5*np.array([-7.51, -5.50, -7.37, 15.57, 23.57, 5.22])).astype(int) # 256 / -30, -22, -30, 62, 95, 21    -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
+        goal = 256*np.ones((2)) + 1.25*np.array([80, -8]) # 256 / 20, -2   5, -1
         cnt = rospy.get_param('~cnt')
         planner = Planner(cnt, init_pose[2*cnt-2:2*cnt], goal)
         planner.main()
