@@ -9,6 +9,7 @@ from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 
 import multiprocessing
+import pdb
 
 # Define some colors
 BLACK = (0, 0, 0)  # BLACK
@@ -112,7 +113,8 @@ if __name__ == '__main__':
         rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
         init_pose = 256*np.ones((6,1)) + np.array([-7, -5, -7, 16, 24, 6])
-        goal = 256*np.ones((2,1)) + np.array([20, -2])
+        goal = np.add(256*np.ones((2,1)), np.mat(['20; -2']))
+        pdb.set_trace()
         for i in range(1, 4):
             globals()['p{}'.format(i)] = Planner(i, np.array(init_pose[2*i-2:2*i]), goal)
             globals()['p{}'.format(i)].start()
