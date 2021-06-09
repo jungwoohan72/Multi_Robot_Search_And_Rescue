@@ -1,3 +1,11 @@
 <launch>
-    <node name="planning" pkg="planning" type="planning.py" output="screen" />
+    <node name="planning1" pkg="planning" type="planning.py" output="screen">
+        <param name="cnt" value="1"/>
+    </node>
+    <node name="planning2" pkg="planning" type="planning.py" output="screen">
+        <param name="cnt" value="2"/>
+    </node>
+    <node name="planning3" pkg="planning" type="planning.py" output="screen">
+        <param name="cnt" value="3"/>
+    </node>
 </launch>
