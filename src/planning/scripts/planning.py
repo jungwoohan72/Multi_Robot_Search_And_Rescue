@@ -96,15 +96,16 @@ class Planner(multiprocessing.Process):
         ctrl.angular.y = 0.0
         ctrl.angular.z = 0.0
 
-        print("publish"+str(self.cnt))
         self.ctrl_pub.publish(ctrl)
+        print("publish"+str(self.cnt))
 
     def run(self):
         try:
+            rate = rospy.Rate(1)
             while not rospy.is_shutdown():
-                rate = rospy.Rate(3)
                 self.planning()
                 rate.sleep()
+            rospy.spin()
 
         except KeyboardInterrupt:
             pass
@@ -113,12 +114,11 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-        init_pose = 256*np.ones((6)) + np.array([-7, -5, -7, 16, 24, 6])
-        goal = 256*np.ones((2)) + np.array([20, -2])
+        init_pose = 64*np.ones((6)) + np.array([-2, -1, -2, 4, 8, 2])
+        goal = 64*np.ones((2)) + np.array([5, -1])
         for i in range(1, 4):
             globals()['p{}'.format(i)] = Planner(i, init_pose[2*i-2:2*i], goal)
             globals()['p{}'.format(i)].start()
-        rospy.spin()
 
     except rospy.ROSInterruptException:
         pass
