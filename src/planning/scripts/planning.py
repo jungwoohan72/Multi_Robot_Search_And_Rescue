@@ -10,6 +10,7 @@ from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 
 import multiprocessing
 import pdb
+import time
 
 # Define some colors
 BLACK = (0, 0, 0)  # BLACK
@@ -57,24 +58,12 @@ class Planner(multiprocessing.Process):
         self.map = OccupancyGridMap(512, 512)
         self.cnt = i
 
-    def pose_cb(self, msgs):
-        self.curr_pose = np.array([msgs.pose.position.x, msgs.pose.position.y]).astype(int)
-        self.curr_ori = msgs.pose.orientation
-        # pose trans
-
     def obtain_map(self):
         global g_map
         self.map.occupancy_grid_map = g_map
 
     def planning(self):
-        """
-        set initial values for the map occupancy grid
-        |----------> y, column
-        |           (x=0,y=2)
-        |
-        V (x=2, y=0)
-        x, row
-        """
+        # rate = rospy.Rate(1)
         self.obtain_map()
 
         # D* Lite (optimized)
@@ -102,24 +91,22 @@ class Planner(multiprocessing.Process):
 
     def run(self):
         try:
-            rate = rospy.Rate(1)
+            rate = rospy.Rate(3)
             while not rospy.is_shutdown():
                 self.planning()
-                # rate.sleep()
-            rospy.spin()
+                rate.sleep()
 
         except KeyboardInterrupt:
             pass
 
 if __name__ == '__main__':
     try:
-        rospy.init_node('planning', anonymous=False)
+        rospy.init_node('planning', anonymous=True)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
         init_pose = 64*np.ones((6)) + np.array([-2, -1, -2, 4, 8, 2]) # 256 / -7, -5, -7, 16, 24, 6
         goal = 64*np.ones((2)) + np.array([5, -1]) # 256 / 20, -2
         for i in range(1, 4):
             globals()['p{}'.format(i)] = Planner(i, init_pose[2*i-2:2*i], goal)
             globals()['p{}'.format(i)].start()
-
     except rospy.ROSInterruptException:
         pass
