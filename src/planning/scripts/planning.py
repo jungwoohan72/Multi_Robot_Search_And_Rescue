@@ -31,7 +31,6 @@ n = 4
 
 MAX_LIN_VEL = 3
 MAX_ANG_VEL = 2
-EPSILON = 0.05
 MAX_STEP = 10000
 
 # Global variable
