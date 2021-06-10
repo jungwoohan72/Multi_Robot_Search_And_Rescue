@@ -27,11 +27,11 @@ UNOCCUPIED = 0
 TRAJ = 127
 OBSTACLE = 255
 
-n = 2
+n = 4
 
 MAX_LIN_VEL = 3
 MAX_ANG_VEL = 2
-EPSILON = 4/n
+EPSILON = 0.05
 MAX_STEP = 10000
 
 # Global variable
@@ -176,13 +176,19 @@ class Planner():
             cv.waitKey(7000)
 
         if self.way:
-            self.control(self.way[int(8/n)]) # around goal ~~
+            self.control(self.way[1]) # around goal ~~
 
     def control(self, target_pose):
         # Calculate control input to publish
-        step = 0
-
         global MAX_STEP, EPSILON
+
+        move_x = False
+        move_y = False
+
+        if target_pose[0] == self.curr_pose[0]:
+            move_y = True
+        elif target_pose[1] == self.curr_pose[1]:
+            move_x = True
 
         x_curr = self.curr_pose_real[0]
         y_curr = self.curr_pose_real[1]
@@ -194,16 +200,29 @@ class Planner():
 
         LOS = calculate_LOS(self.curr_pose_real, target, yaw_curr)
 
-        x_error = x_target-x_curr
-        y_error = y_target-y_curr
+        # x_error = x_target-x_curr
+        # y_error = y_target-y_curr
+
+        if move_y:
+            x_error = 0
+            y_error = y_target-y_curr
+        elif move_x:
+            x_error = x_target-x_curr
+            y_error = 0
 
         # print(self.cnt, x_error, y_error)
 
-        if math.hypot(x_error, y_error) > EPSILON:
+        if target_pose != self.curr_pose:
+            if move_y:
+                x_error = 0
+                y_error = y_target-y_curr
+            elif move_x:
+                x_error = x_target-x_curr
+                y_error = 0
             # print(self.cnt, "Control in progress")
             # print(self.cnt, x_curr, y_curr, self.curr_pose[0], self.curr_pose[1], target_pose, target)
-            v_x = checkLinearLimitVelocity(0.05*x_error)
-            v_y = checkLinearLimitVelocity(0.05*y_error)
+            v_x = checkLinearLimitVelocity(0.1*x_error)
+            v_y = checkLinearLimitVelocity(0.1*y_error)
             self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
             self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
             self.ctrl.linear.z = 0.0
@@ -211,9 +230,10 @@ class Planner():
             self.ctrl.angular.x = 0.0
             self.ctrl.angular.y = 0.0
             self.ctrl.angular.z = 0
-            step += 1
 
-        elif math.hypot(x_error, y_error) < EPSILON or step > MAX_STEP:
+            self.ctrl_pub.publish(self.ctrl)
+
+        elif target_pose == self.curr_pose:
             print(self.cnt, 'stop')
             self.ctrl.linear.x = 0
             self.ctrl.linear.y = 0
@@ -223,7 +243,7 @@ class Planner():
             self.ctrl.angular.y = 0.0
             self.ctrl.angular.z = 0.0
 
-        self.ctrl_pub.publish(self.ctrl)
+            self.ctrl_pub.publish(self.ctrl)
 
     def main(self):
         try:

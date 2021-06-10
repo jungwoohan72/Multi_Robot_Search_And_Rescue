@@ -29,7 +29,7 @@ class DStarLite:
 
         self.sensed_map = OccupancyGridMap(x_dim=map.x_dim,
                                            y_dim=map.y_dim,
-                                           exploration_setting='8N')
+                                           exploration_setting='4N')
 
         self.rhs[self.s_goal] = 0
         self.U.insert(self.s_goal, Priority(heuristic(self.s_start, self.s_goal), 0))

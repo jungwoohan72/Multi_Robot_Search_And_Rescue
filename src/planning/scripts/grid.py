@@ -9,7 +9,7 @@ OBSTACLE = 255
 
 
 class OccupancyGridMap:
-    def __init__(self, x_dim, y_dim, exploration_setting='8N'):
+    def __init__(self, x_dim, y_dim, exploration_setting='4N'):
         """
         set initial values for the map occupancy grid
         |----------> y, column
