@@ -32,6 +32,10 @@ p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
 g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
 flag = False
 
+x_target = 0
+y_target = 0
+yaw_target = 0
+
 def map_cb(msgs):
     global p_map, g_map, flag
     h = msgs.info.height
@@ -49,6 +53,27 @@ def map_cb(msgs):
     p_map = input
     temp = np.array(input, dtype=np.uint8)
     g_map  = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3)).astype(int)
+
+def quaternion_to_euler(ori):
+    q0 = ori.w
+    q1 = ori.x
+    q2 = ori.y
+    q3 = ori.z
+
+    yaw = math.atan2(2*(q0*q3+q1*q2),1-2*(q2**2+q3**2))
+    return yaw
+
+def grid_to_real(grid_pose):
+    global n
+
+    grid_pose = np.asarray(grid_pose)
+
+    grid_pose = grid_pose - np.round(256*np.ones((2))/n
+    real_pose = (n*grid_pose)/5
+    return real_pose
+
+def calculate_LOS(pose, target):
+    pass
 
 class Planner():
     def __init__(self, cnt, init_pose, goal):
@@ -121,10 +146,22 @@ class Planner():
             cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
             cv.waitKey(10000)
 
-        self.control()
+        self.control(self.way[0])
 
-    def control(self):
+    def control(self, target_pose):
         # Calculate control input to publish
+
+        x_curr = self.curr_pose[0]
+        y_curr = self.curr_pose[1]
+        yaw_curr = quaternion_to_euler(self.curr_ori)
+
+        target = grid_to_real(target_pose)
+        x_target = target[0]
+        y_target = target[1]
+
+        x_error = 0.0
+        y_error = 0.0
+
         self.ctrl.linear.x = 0.0
         self.ctrl.linear.y = 0.0
         self.ctrl.linear.z = 0.0
