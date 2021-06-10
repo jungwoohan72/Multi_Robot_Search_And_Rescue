@@ -27,8 +27,14 @@ UNOCCUPIED = 0
 TRAJ = 127
 OBSTACLE = 255
 
+n = 2
+
+MAX_LIN_VEL = 3
+MAX_ANG_VEL = 2
+EPSILON = 4/n
+MAX_STEP = 10000
+
 # Global variable
-n = 4
 p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
 g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
 flag = False
@@ -73,8 +79,27 @@ def grid_to_real(grid_pose):
     real_pose = (n*grid_pose)/5
     return real_pose
 
-def calculate_LOS(pose, target):
-    pass
+def calculate_LOS(curr_pose, target, yaw):
+    LOS = math.atan2((target[1]-curr_pose[1]),(target[0]-curr_pose[1]))
+    return LOS
+
+def constrain(input, low, high):
+    if input < low:
+      input = low
+    elif input > high:
+      input = high
+    else:
+      input = input
+
+    return input
+
+def checkLinearLimitVelocity(vel):
+    vel = constrain(vel, -MAX_LIN_VEL, MAX_LIN_VEL)
+    return vel
+
+def checkAngularLimitVelocity(vel):
+    vel = constrain(vel, -MAX_ANG_VEL, MAX_ANG_VEL)
+    return vel
 
 class Planner():
     def __init__(self, cnt, init_pose, goal):
@@ -83,6 +108,7 @@ class Planner():
         self.init_pose = tuple(init_pose.astype(int))
         self.prev_pose = tuple(init_pose.astype(int))
         self.curr_pose = tuple(init_pose.astype(int))
+        self.curr_pose_real = (0,0)
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.map = OccupancyGridMap(int(512/n), int(512/n))
@@ -101,6 +127,7 @@ class Planner():
     def pose_cb(self, msgs):
         global n
         self.curr_pose = tuple(np.round(256*np.ones((2))/n + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
+        self.curr_pose_real = (msgs.pose.position.x, msgs.pose.position.y)
         self.curr_ori = msgs.pose.orientation
 
     def obtain_map(self):
@@ -131,6 +158,7 @@ class Planner():
             self.dstar.sensed_map = slam_map
 
             # # move and compute path
+            print('robot', self.cnt)
             self.way, g, rhs = self.dstar.move_and_replan(robot_position=self.curr_pose)
 
             # print(path)
@@ -139,38 +167,61 @@ class Planner():
                 if not self.path.occupancy_grid_map[x, y]:
                     self.path.occupancy_grid_map[x, y] = TRAJ
 
-            cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
+            cv.imshow("map" + str(self.cnt), cv.resize(np.array(self.path.occupancy_grid_map, dtype=np.uint8), dsize=(0, 0), fx=n, fy=n, interpolation=cv.INTER_LINEAR))
             cv.waitKey(100)
 
         if self.first:
             self.first = False
-            cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
+            cv.imshow("map" + str(self.cnt), cv.resize(np.array(self.path.occupancy_grid_map, dtype=np.uint8), dsize=(0, 0), fx=n, fy=n, interpolation=cv.INTER_LINEAR))
             cv.waitKey(7000)
-            
+
         if self.way:
-            self.control(self.way[0])
+            self.control(self.way[int(8/n)]) # around goal ~~
 
     def control(self, target_pose):
         # Calculate control input to publish
+        step = 0
 
-        x_curr = self.curr_pose[0]
-        y_curr = self.curr_pose[1]
-        yaw_curr = quaternion_to_euler(self.curr_ori)
+        global MAX_STEP, EPSILON
+
+        x_curr = self.curr_pose_real[0]
+        y_curr = self.curr_pose_real[1]
+        yaw_curr = quaternion_to_euler(self.curr_ori) # initial: 1.57 -1.57 1.57
 
         target = grid_to_real(target_pose)
         x_target = target[0]
         y_target = target[1]
 
-        x_error = 0.0
-        y_error = 0.0
+        LOS = calculate_LOS(self.curr_pose_real, target, yaw_curr)
 
-        self.ctrl.linear.x = 0.0
-        self.ctrl.linear.y = 0.0
-        self.ctrl.linear.z = 0.0
+        x_error = x_target-x_curr
+        y_error = y_target-y_curr
 
-        self.ctrl.angular.x = 0.0
-        self.ctrl.angular.y = 0.0
-        self.ctrl.angular.z = 0.0
+        # print(self.cnt, x_error, y_error)
+
+        if math.hypot(x_error, y_error) > EPSILON:
+            # print(self.cnt, "Control in progress")
+            # print(self.cnt, x_curr, y_curr, self.curr_pose[0], self.curr_pose[1], target_pose, target)
+            v_x = checkLinearLimitVelocity(0.05*x_error)
+            v_y = checkLinearLimitVelocity(0.05*y_error)
+            self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
+            self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
+            self.ctrl.linear.z = 0.0
+
+            self.ctrl.angular.x = 0.0
+            self.ctrl.angular.y = 0.0
+            self.ctrl.angular.z = 0
+            step += 1
+
+        elif math.hypot(x_error, y_error) < EPSILON or step > MAX_STEP:
+            print(self.cnt, 'stop')
+            self.ctrl.linear.x = 0
+            self.ctrl.linear.y = 0
+            self.ctrl.linear.z = 0.0
+
+            self.ctrl.angular.x = 0.0
+            self.ctrl.angular.y = 0.0
+            self.ctrl.angular.z = 0.0
 
         self.ctrl_pub.publish(self.ctrl)
 
