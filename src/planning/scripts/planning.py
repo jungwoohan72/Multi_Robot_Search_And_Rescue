@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 import time
+import math
 import rospy
 import cv2 as cv
 import numpy as np
@@ -68,7 +69,7 @@ def grid_to_real(grid_pose):
 
     grid_pose = np.asarray(grid_pose)
 
-    grid_pose = grid_pose - np.round(256*np.ones((2))/n
+    grid_pose = grid_pose - np.round(256*np.ones((2))/n)
     real_pose = (n*grid_pose)/5
     return real_pose
 
@@ -85,7 +86,7 @@ class Planner():
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.map = OccupancyGridMap(int(512/n), int(512/n))
-        self.slam = SLAM(map=self.map, view_range=int(512/n))
+        self.slam = SLAM(map=self.map, view_range=int(128/n))
         self.dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
         self.path = OccupancyGridMap(int(512/n), int(512/n))
         self.way = []
@@ -144,9 +145,10 @@ class Planner():
         if self.first:
             self.first = False
             cv.imshow("map" + str(self.cnt), np.array(self.path.occupancy_grid_map, dtype=np.uint8))
-            cv.waitKey(10000)
-
-        self.control(self.way[0])
+            cv.waitKey(7000)
+            
+        if self.way:
+            self.control(self.way[0])
 
     def control(self, target_pose):
         # Calculate control input to publish
@@ -187,8 +189,8 @@ if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
         map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-        init_pose = np.round(256*np.ones((6))/n + 5*np.array([-7.4, -5.5, -7.5, 15.5, 23.701897, 5.219147])/n) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
-        goal = np.round(256*np.ones((2))/n + 5*np.array([20, -4])/n) # 256 / 20, -2   5, -1
+        init_pose = np.round(256*np.ones((6))/n + 5.2*np.array([-7.4, -5.5, -7.5, 15.5, 23.701897, 5.219147])/n) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
+        goal = np.round(256*np.ones((2))/n + 5.2*np.array([20, -4])/n) # 256 / 20, -2   5, -1
         cnt = rospy.get_param('~cnt')
         planner = Planner(cnt, init_pose[2*cnt-2:2*cnt], goal)
         planner.main()
