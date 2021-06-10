@@ -66,7 +66,6 @@ class Planner():
         self.way = []
         self.ctrl = Twist()
         self.first = True
-        self.second = True
         self.cnt = cnt
         self.k = 0
 
@@ -107,8 +106,6 @@ class Planner():
 
             # # move and compute path
             self.way, g, rhs = self.dstar.move_and_replan(robot_position=self.curr_pose)
-            
-            self.second = False
 
             # print(path)
             self.path.occupancy_grid_map = self.map.occupancy_grid_map
