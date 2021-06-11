@@ -123,17 +123,18 @@ class OccupancyGridMap:
         :return: dictionary of new observations
         """
         (px, py) = g_pos_1
-        nodes = [(x, y) for x in range(px - view_range, px + view_range + 1)
+        nodes1 = [(x, y) for x in range(px - view_range, px + view_range + 1)
                  for y in range(py - view_range, py + view_range + 1)
                  if self.in_bounds((x, y))]
         (px, py) = g_pos_2
-        nodes += [(x, y) for x in range(px - view_range, px + view_range + 1)
+        nodes2 = [(x, y) for x in range(px - view_range, px + view_range + 1)
                  for y in range(py - view_range, py + view_range + 1)
                  if self.in_bounds((x, y))]
         (px, py) = g_pos_3
-        nodes += [(x, y) for x in range(px - view_range, px + view_range + 1)
+        nodes3 = [(x, y) for x in range(px - view_range, px + view_range + 1)
                  for y in range(py - view_range, py + view_range + 1)
                  if self.in_bounds((x, y))]
+        nodes = nodes1 + nodes2 + nodes3
         return {node: UNOCCUPIED if self.is_unoccupied(pos=node) else OBSTACLE for node in nodes}
 
 

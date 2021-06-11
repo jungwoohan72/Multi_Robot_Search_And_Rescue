@@ -64,7 +64,7 @@ MapMerge::MapMerge() : subscriptions_size_(0)
 
   /* publishing */
   merged_map_publisher_ =
-      node_.advertise<nav_msgs::OccupancyGrid>(merged_map_topic, 50, true);
+      node_.advertise<nav_msgs::OccupancyGrid>(merged_map_topic, 50, false);
 }
 
 /*
