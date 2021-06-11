@@ -160,7 +160,7 @@ class Planner():
         if self.curr_pose != self.prev_pose and not self.flag:
             self.prev_pose = self.curr_pose
 
-            new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
+            new_edges_and_old_costs, slam_map = self.slam.rescan(g_pos_1=self.curr_pose, g_pos_2=self.curr_pose, g_pos_3=self.curr_pose)
 
             self.dstar.new_edges_and_old_costs = new_edges_and_old_costs
             self.dstar.sensed_map = slam_map
