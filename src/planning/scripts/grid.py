@@ -116,14 +116,22 @@ class OccupancyGridMap:
         (row, col) = (x, y)
         self.occupancy_grid_map[row, col] = UNOCCUPIED
 
-    def local_observation(self, global_position: (int, int), view_range: int = 2) -> Dict:
+    def local_observation(self, g_pos_1: (int, int), g_pos_2: (int, int), g_pos_3: (int, int), view_range: int = 2) -> Dict:
         """
         :param global_position: position of robot in the global map frame
         :param view_range: how far ahead we should look
         :return: dictionary of new observations
         """
-        (px, py) = global_position
+        (px, py) = g_pos_1
         nodes = [(x, y) for x in range(px - view_range, px + view_range + 1)
+                 for y in range(py - view_range, py + view_range + 1)
+                 if self.in_bounds((x, y))]
+        (px, py) = g_pos_2
+        nodes += [(x, y) for x in range(px - view_range, px + view_range + 1)
+                 for y in range(py - view_range, py + view_range + 1)
+                 if self.in_bounds((x, y))]
+        (px, py) = g_pos_3
+        nodes += [(x, y) for x in range(px - view_range, px + view_range + 1)
                  for y in range(py - view_range, py + view_range + 1)
                  if self.in_bounds((x, y))]
         return {node: UNOCCUPIED if self.is_unoccupied(pos=node) else OBSTACLE for node in nodes}
@@ -151,11 +159,10 @@ class SLAM:
         else:
             return heuristic(u, v)
 
-    def rescan(self, global_position: (int, int)):
+    def rescan(self, g_pos_1: (int, int), g_pos_2: (int, int), g_pos_3: (int, int)):
 
         # rescan local area
-        local_observation = self.ground_truth_map.local_observation(global_position=global_position,
-                                                                    view_range=self.view_range)
+        local_observation = self.ground_truth_map.local_observation(g_pos_1=g_pos_1, g_pos_2=g_pos_2, g_pos_3=g_pos_3, view_range=self.view_range)
 
         vertices = self.update_changed_edge_costs(local_grid=local_observation)
         return vertices, self.slam_map
