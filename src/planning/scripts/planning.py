@@ -34,31 +34,13 @@ MAX_ANG_VEL = 2
 MAX_STEP = 10000
 
 # Global variable
-p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
-g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
-flag = False
+# p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
+# g_map = np.zeros((int(512/n), int(512/n)), dtype=np.uint8) # 512, 512
+# flag = False
 
 x_target = 0
 y_target = 0
 yaw_target = 0
-
-def map_cb(msgs):
-    global p_map, g_map, flag
-    h = msgs.info.height
-    w = msgs.info.width
-    input = np.transpose(np.reshape(msgs.data, (h,w)))
-    batch = int(4*n) # 4
-    for i in range(h):
-        for j in range(w):
-            if input[i, j] != p_map[i, j]:
-                flag = True
-            if input[i, j] > 99:
-                input[i, j] = OBSTACLE
-            else:
-                input[i, j] = UNOCCUPIED
-    p_map = input
-    temp = np.array(input, dtype=np.uint8)
-    g_map  = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3)).astype(int)
 
 def quaternion_to_euler(ori):
     q0 = ori.w
@@ -111,28 +93,55 @@ class Planner():
         self.goal = tuple(goal.astype(int))
         self.curr_ori = Quaternion()
         self.map = OccupancyGridMap(int(512/n), int(512/n))
-        self.slam = SLAM(map=self.map, view_range=int(128/n))
+        self.slam = SLAM(map=self.map, view_range=int(5*4/n))
         self.dstar = DStarLite(map=self.map, s_start=self.init_pose, s_goal=self.goal)
         self.path = OccupancyGridMap(int(512/n), int(512/n))
         self.way = []
         self.ctrl = Twist()
         self.first = True
+        self.p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
+        self.flag = False
         self.cnt = cnt
-        self.k = 0
+        self.k = 1
 
         self.pose_sub = rospy.Subscriber("/robot"+str(cnt)+"/slam_out_pose", PoseStamped, self.pose_cb, queue_size=10)
         self.ctrl_pub = rospy.Publisher("/robot"+str(cnt)+"/cmd_vel", Twist, queue_size=10)
 
+    def map_cb(self, msgs):
+        # global p_map, flag #, g_map
+        h = msgs.info.height
+        w = msgs.info.width
+        input = np.transpose(np.reshape(msgs.data, (h,w)))
+        batch = int(4*n) # 4
+        for i in range(h):
+            for j in range(w):
+                if input[i, j] != self.p_map[i, j]:
+                    self.flag = True
+                if input[i, j] > 99:
+                    input[i, j] = OBSTACLE
+                else:
+                    input[i, j] = UNOCCUPIED
+        if self.flag:
+            self.p_map = input
+            temp = np.array(input, dtype=np.uint8)
+            g_map  = temp[:(h//batch)*batch, :(w//batch)*batch].reshape(h//batch, batch, w//batch, batch).max(axis=(1, 3)).astype(int)
+            self.map.occupancy_grid_map = g_map
+            self.slam.set_ground_truth_map(gt_map = self.map)
+
     def pose_cb(self, msgs):
         global n
-        self.curr_pose = tuple(np.round(256*np.ones((2))/n + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
+        # self.curr_pose = tuple(np.round(256*np.ones((2))/n).astype(int) + np.round(5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
+        if cnt == 1 or cnt == 3:
+            self.curr_pose = tuple(np.round(253*np.ones((2))/n).astype(int) + np.round(5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
+        else:
+            self.curr_pose = tuple(np.round(np.array([255, 259])/n).astype(int) + np.round(5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
         self.curr_pose_real = (msgs.pose.position.x, msgs.pose.position.y)
         self.curr_ori = msgs.pose.orientation
 
-    def obtain_map(self):
-        global g_map
-        self.map.occupancy_grid_map = g_map
-        self.slam.set_ground_truth_map(gt_map = self.map)
+    # def obtain_map(self):
+    #     global g_map
+    #     self.map.occupancy_grid_map = g_map
+    #     self.slam.set_ground_truth_map(gt_map = self.map)
 
     def planning(self):
         """
@@ -144,11 +153,11 @@ class Planner():
         x, row
         """
         global n, flag
-        if flag:
-            self.obtain_map()
-            flag = False
+        # if flag:
+        #     self.obtain_map()
+        #     flag = False
 
-        if self.curr_pose != self.prev_pose and not flag:
+        if self.curr_pose != self.prev_pose and not self.flag:
             self.prev_pose = self.curr_pose
 
             new_edges_and_old_costs, slam_map = self.slam.rescan(global_position=self.curr_pose)
@@ -165,6 +174,8 @@ class Planner():
             for (x, y) in self.way:
                 if not self.path.occupancy_grid_map[x, y]:
                     self.path.occupancy_grid_map[x, y] = TRAJ
+            self.path.occupancy_grid_map[self.init_pose] = 255
+            self.path.occupancy_grid_map[self.goal] = 255
 
             cv.imshow("map" + str(self.cnt), cv.resize(np.array(self.path.occupancy_grid_map, dtype=np.uint8), dsize=(0, 0), fx=n, fy=n, interpolation=cv.INTER_LINEAR))
             cv.waitKey(100)
@@ -173,9 +184,33 @@ class Planner():
             self.first = False
             cv.imshow("map" + str(self.cnt), cv.resize(np.array(self.path.occupancy_grid_map, dtype=np.uint8), dsize=(0, 0), fx=n, fy=n, interpolation=cv.INTER_LINEAR))
             cv.waitKey(7000)
+            print("robot", self.cnt, "start")
+
+            # self.obtain_map()
+            # flag = False
+
+            new_edges_and_old_costs, slam_map = self.slam.rescan(g_pos_1=self.curr_pose, g_pos_2=self.curr_pose, g_pos_3=self.curr_pose)
+
+            self.dstar.new_edges_and_old_costs = new_edges_and_old_costs
+            self.dstar.sensed_map = slam_map
+
+            # # move and compute path
+            print('robot', self.cnt)
+            self.way, g, rhs = self.dstar.move_and_replan(robot_position=self.curr_pose)
+            self.k = 1
+
+            # print(path)
+            self.path.occupancy_grid_map = self.map.occupancy_grid_map
+            for (x, y) in self.way:
+                if not self.path.occupancy_grid_map[x, y]:
+                    self.path.occupancy_grid_map[x, y] = TRAJ
+
+            cv.imshow("map" + str(self.cnt), cv.resize(np.array(self.path.occupancy_grid_map, dtype=np.uint8), dsize=(0, 0), fx=n, fy=n, interpolation=cv.INTER_LINEAR))
+            cv.waitKey(100)
 
         if self.way:
-            self.control(self.way[1]) # around goal ~~
+            self.control(self.way[self.k+1]) # around goal ~~
+            print(self.cnt, "control start: ", self.k)
 
     def control(self, target_pose):
         # Calculate control input to publish
@@ -211,7 +246,7 @@ class Planner():
 
         # print(self.cnt, x_error, y_error)
 
-        if target_pose != self.curr_pose:
+        if target_pose != self.curr_pose and (move_x or move_y):
             if move_y:
                 x_error = 0
                 y_error = y_target-y_curr
@@ -220,8 +255,8 @@ class Planner():
                 y_error = 0
             # print(self.cnt, "Control in progress")
             # print(self.cnt, x_curr, y_curr, self.curr_pose[0], self.curr_pose[1], target_pose, target)
-            v_x = checkLinearLimitVelocity(0.1*x_error)
-            v_y = checkLinearLimitVelocity(0.1*y_error)
+            v_x = checkLinearLimitVelocity(0.25*x_error)
+            v_y = checkLinearLimitVelocity(0.25*y_error)
             self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
             self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
             self.ctrl.linear.z = 0.0
@@ -243,9 +278,11 @@ class Planner():
             self.ctrl.angular.z = 0.0
 
             self.ctrl_pub.publish(self.ctrl)
+            self.k += 1
 
     def main(self):
         try:
+            map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, self.map_cb, queue_size=10)
             rate = rospy.Rate(0.5)
             while not rospy.is_shutdown():
                 self.planning()
@@ -258,9 +295,8 @@ class Planner():
 if __name__ == '__main__':
     try:
         rospy.init_node('planning', anonymous=False)
-        map_sub = rospy.Subscriber("/map_merge/map", OccupancyGrid, map_cb, queue_size=10)
-        init_pose = np.round(256*np.ones((6))/n + 5.2*np.array([-7.4, -5.5, -7.5, 15.5, 23.701897, 5.219147])/n) # 256 / -7, -5, -7, 16, 24, 6   -2, -1, -2, 4, 8, 2
-        goal = np.round(256*np.ones((2))/n + 5.2*np.array([20, -4])/n) # 256 / 20, -2   5, -1
+        init_pose = np.round(np.array([253, 253, 255, 259, 253, 253])/n) + np.round(5*np.array([-7.4, -6, -7.5, 16, 23.701897, 5.0])/n) # 256 / -7.4, -5.5, -7.5, 15.5, 23.701897, 5.219147   -2, -1, -2, 4, 8, 2
+        goal = np.round(253*np.ones((2))/n) + np.round(5*np.array([20, -4])/n) # 256 / 20, -2   5, -1
         cnt = rospy.get_param('~cnt')
         planner = Planner(cnt, init_pose[2*cnt-2:2*cnt], goal)
         planner.main()
