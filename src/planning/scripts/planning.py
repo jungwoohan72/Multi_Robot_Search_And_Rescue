@@ -122,6 +122,7 @@ class Planner():
         self.first = True
         self.p_map = np.zeros((int(2048), int(2048)), dtype=np.uint8)
         self.flag = False
+        self.stop = False
         self.cnt = cnt
         self.k = 1
 
@@ -131,7 +132,7 @@ class Planner():
         self.ctrl_pub = rospy.Publisher("/robot"+str(cnt)+"/cmd_vel", Twist, queue_size=10)
     def map_cb1(self, msgs):
         global p_map, g_map, flag
-        
+
         h = msgs.info.height
         w = msgs.info.width
         input = np.transpose(np.reshape(msgs.data, (h,w)))
@@ -171,7 +172,7 @@ class Planner():
 
     def map_cb3(self, msgs):
         global p_map, g_map, flag
-        
+
         h = msgs.info.height
         w = msgs.info.width
         input = np.transpose(np.reshape(msgs.data, (h,w)))
@@ -224,7 +225,7 @@ class Planner():
             # self.curr_pose = tuple(np.round(254*np.ones((2))/n).astype(int) + np.round(5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
             # self.curr_pose_real = (msgs.pose.position.x, msgs.pose.position.y)
             # self.curr_ori = msgs.pose.orientation
-            
+
     def pose_cb(self, msgs):
         global n
         self.curr_pose = tuple(np.round(254*np.ones((2))/n + 5*np.array([msgs.pose.position.x, msgs.pose.position.y])/n).astype(int))
@@ -375,6 +376,7 @@ class Planner():
             self.ctrl.angular.z = 0.0
 
             self.ctrl_pub.publish(self.ctrl)
+            self.stop = True
 
         else:
             print(self.cnt, "control start: ", self.k)
@@ -493,7 +495,7 @@ class Planner():
             map_sub2 = rospy.Subscriber("/robot2/map", OccupancyGrid, self.map_cb2, queue_size=10)
             map_sub3 = rospy.Subscriber("/robot3/map", OccupancyGrid, self.map_cb3, queue_size=10)
             rate = rospy.Rate(0.2)
-            while not rospy.is_shutdown():
+            while not rospy.is_shutdown() or not self.stop:
                 self.planning()
                 rate.sleep()
             rospy.spin()
