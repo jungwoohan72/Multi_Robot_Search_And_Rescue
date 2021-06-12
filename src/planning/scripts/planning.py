@@ -311,54 +311,49 @@ class Planner():
             # time.sleep(0.1)
 
         if self.way:
-            self.control(self.way[self.k]) # around goal ~~
-            print(self.cnt, "control start: ", self.k)
+            self.control(self.way) # around goal ~~
 
-    def control(self, target_pose):
+    def control(self, path):
         # Calculate control input to publish
         global MAX_STEP, EPSILON
 
-        move_x = False
-        move_y = False
+        if len(path) > 5:
+            print(self.cnt, "control start: ", self.k)
+            path_close = path[0:5]
+            weight = np.array([(x-self.curr_pose[0])**2+(y-self.curr_pose[1])**2 for x, y in path_close])
+            weight = weight.argsort()
+            for i in range(weight[0]-1):
+                path = np.delete(path, 0, 0)
+                self.k += 1
+                # print(cnt, (curr_pose[0],curr_pose[1]), path[1])
+            target = path[1]
 
-        if target_pose[0] == self.curr_pose[0]:
-            move_y = True
-        elif target_pose[1] == self.curr_pose[1]:
-            move_x = True
+            # x_curr = self.curr_pose_real[0]
+            # y_curr = self.curr_pose_real[1]
+            yaw_curr = quaternion_to_euler(self.curr_ori) # initial: 1.57 -1.57 1.57
 
-        x_curr = self.curr_pose_real[0]
-        y_curr = self.curr_pose_real[1]
-        yaw_curr = quaternion_to_euler(self.curr_ori) # initial: 1.57 -1.57 1.57
+            # target_real = grid_to_real(target)
+            # x_target_real = target_real[0]
+            # y_target_real = target_real[1]
 
-        target = grid_to_real(target_pose)
-        x_target = target[0]
-        y_target = target[1]
+            x_error = target[0]-self.curr_pose[0]
+            y_error = target[1]-self.curr_pose[1]
 
-        LOS = calculate_LOS(self.curr_pose_real, target, yaw_curr)
+            # target = grid_to_real(target)
+            # x_target = target[0]
+            # y_target = target[1]
 
-        # x_error = x_target-x_curr
-        # y_error = y_target-y_curr
+            # x_error = x_target-x_curr
+            # y_error = y_target-y_curr
 
-        if move_y:
-            x_error = 0
-            y_error = abs(y_target-y_curr)/(y_target-y_curr)
-        elif move_x:
-            x_error = abs(x_target-x_curr)/(x_target-x_curr)
-            y_error = 0
-
-        # print(self.cnt, x_error, y_error)
-
-        if target_pose != self.curr_pose:
-            if move_y:
-                x_error = 0
-                y_error = y_target-y_curr
-            elif move_x:
-                x_error = x_target-x_curr
-                y_error = 0
-            # print(self.cnt, "Control in progress")
-            # print(self.cnt, x_curr, y_curr, self.curr_pose[0], self.curr_pose[1], target_pose, target)
             v_x = checkLinearLimitVelocity(0.2*x_error)
             v_y = checkLinearLimitVelocity(0.2*y_error)
+
+            if x_error:
+                v_x = checkLinearLimitVelocity(0.15*abs(x_error)/x_error)
+            if y_error:
+                v_y = checkLinearLimitVelocity(0.15*abs(y_error)/y_error)
+
             self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
             self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
             self.ctrl.linear.z = 0.0
@@ -369,18 +364,70 @@ class Planner():
 
             self.ctrl_pub.publish(self.ctrl)
 
-        elif target_pose == self.curr_pose:
-            self.k += 1
-            print(self.cnt, 'stop')
-            self.ctrl.linear.x = 0
-            self.ctrl.linear.y = 0
-            self.ctrl.linear.z = 0.0
 
-            self.ctrl.angular.x = 0.0
-            self.ctrl.angular.y = 0.0
-            self.ctrl.angular.z = 0.0
+        # move_x = False
+        # move_y = False
 
-            self.ctrl_pub.publish(self.ctrl)
+        # if target_pose[0] == self.curr_pose[0]:
+        #     move_y = True
+        # elif target_pose[1] == self.curr_pose[1]:
+        #     move_x = True
+
+        # x_curr = self.curr_pose_real[0]
+        # y_curr = self.curr_pose_real[1]
+        # yaw_curr = quaternion_to_euler(self.curr_ori) # initial: 1.57 -1.57 1.57
+
+        # target = grid_to_real(target_pose)
+        # x_target = target[0]
+        # y_target = target[1]
+
+        # LOS = calculate_LOS(self.curr_pose_real, target, yaw_curr)
+
+        # # x_error = x_target-x_curr
+        # # y_error = y_target-y_curr
+
+        # if move_y and (y_target-y_curr):
+        #     x_error = 0
+        #     y_error = abs(y_target-y_curr)/(y_target-y_curr)
+        # elif move_x and (x_target-x_curr):
+        #     x_error = abs(x_target-x_curr)/(x_target-x_curr)
+        #     y_error = 0
+
+        # # print(self.cnt, x_error, y_error)
+
+        # if target_pose != self.curr_pose:
+        #     if move_y:
+        #         x_error = 0
+        #         y_error = y_target-y_curr
+        #     elif move_x:
+        #         x_error = x_target-x_curr
+        #         y_error = 0
+        #     # print(self.cnt, "Control in progress")
+        #     # print(self.cnt, x_curr, y_curr, self.curr_pose[0], self.curr_pose[1], target_pose, target)
+        #     v_x = checkLinearLimitVelocity(0.2*x_error)
+        #     v_y = checkLinearLimitVelocity(0.2*y_error)
+        #     self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
+        #     self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
+        #     self.ctrl.linear.z = 0.0
+
+        #     self.ctrl.angular.x = 0.0
+        #     self.ctrl.angular.y = 0.0
+        #     self.ctrl.angular.z = 0
+
+        #     self.ctrl_pub.publish(self.ctrl)
+
+        # elif target_pose == self.curr_pose:
+        #     self.k += 1
+        #     print(self.cnt, 'stop')
+        #     self.ctrl.linear.x = 0
+        #     self.ctrl.linear.y = 0
+        #     self.ctrl.linear.z = 0.0
+
+        #     self.ctrl.angular.x = 0.0
+        #     self.ctrl.angular.y = 0.0
+        #     self.ctrl.angular.z = 0.0
+
+        #     self.ctrl_pub.publish(self.ctrl)
 
     def main(self):
         try:
