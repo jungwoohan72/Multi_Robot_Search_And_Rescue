@@ -316,7 +316,7 @@ class Planner():
     def control(self, path):
         # Calculate control input to publish
         global MAX_STEP, EPSILON
-
+        v = 0.125
         if len(path) > 5:
             print(self.cnt, "control start: ", self.k)
             path_close = path[0:5]
@@ -346,13 +346,13 @@ class Planner():
             # x_error = x_target-x_curr
             # y_error = y_target-y_curr
 
-            v_x = checkLinearLimitVelocity(0.2*x_error)
-            v_y = checkLinearLimitVelocity(0.2*y_error)
+            v_x = checkLinearLimitVelocity(v*x_error)
+            v_y = checkLinearLimitVelocity(v*y_error)
 
             if x_error:
-                v_x = checkLinearLimitVelocity(0.15*abs(x_error)/x_error)
+                v_x = checkLinearLimitVelocity(v*abs(x_error)/x_error)
             if y_error:
-                v_y = checkLinearLimitVelocity(0.15*abs(y_error)/y_error)
+                v_y = checkLinearLimitVelocity(v*abs(y_error)/y_error)
 
             self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
             self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
@@ -364,6 +364,64 @@ class Planner():
 
             self.ctrl_pub.publish(self.ctrl)
 
+        elif len(path) < 3:
+            print(self.cnt, 'stop')
+            self.ctrl.linear.x = 0
+            self.ctrl.linear.y = 0
+            self.ctrl.linear.z = 0.0
+
+            self.ctrl.angular.x = 0.0
+            self.ctrl.angular.y = 0.0
+            self.ctrl.angular.z = 0.0
+
+            self.ctrl_pub.publish(self.ctrl)
+
+        else:
+            print(self.cnt, "control start: ", self.k)
+            path_close = path[0:2]
+            weight = np.array([(x-self.curr_pose[0])**2+(y-self.curr_pose[1])**2 for x, y in path_close])
+            weight = weight.argsort()
+            for i in range(weight[0]-1):
+                path = np.delete(path, 0, 0)
+                self.k += 1
+                # print(cnt, (curr_pose[0],curr_pose[1]), path[1])
+            target = path[1]
+
+            # x_curr = self.curr_pose_real[0]
+            # y_curr = self.curr_pose_real[1]
+            yaw_curr = quaternion_to_euler(self.curr_ori) # initial: 1.57 -1.57 1.57
+
+            # target_real = grid_to_real(target)
+            # x_target_real = target_real[0]
+            # y_target_real = target_real[1]
+
+            x_error = target[0]-self.curr_pose[0]
+            y_error = target[1]-self.curr_pose[1]
+
+            # target = grid_to_real(target)
+            # x_target = target[0]
+            # y_target = target[1]
+
+            # x_error = x_target-x_curr
+            # y_error = y_target-y_curr
+
+            v_x = checkLinearLimitVelocity(v*x_error)
+            v_y = checkLinearLimitVelocity(v*y_error)
+
+            if x_error:
+                v_x = checkLinearLimitVelocity(v*abs(x_error)/x_error)
+            if y_error:
+                v_y = checkLinearLimitVelocity(v*abs(y_error)/y_error)
+
+            self.ctrl.linear.x = v_x*math.cos(yaw_curr) + v_y*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*x_error)
+            self.ctrl.linear.y = v_y*math.cos(yaw_curr) - v_x*math.sin(yaw_curr) # -checkLinearLimitVelocity(0.01*y_error)
+            self.ctrl.linear.z = 0.0
+
+            self.ctrl.angular.x = 0.0
+            self.ctrl.angular.y = 0.0
+            self.ctrl.angular.z = 0
+
+            self.ctrl_pub.publish(self.ctrl)
 
         # move_x = False
         # move_y = False

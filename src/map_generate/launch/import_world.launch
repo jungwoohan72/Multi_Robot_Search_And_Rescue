@@ -17,11 +17,7 @@
     <arg name="x" default="16" />
     <arg name="y" default="5" />
 
-    <arg name="sdf_world_file" value="$(find map_generate)/worlds/model.sdf"/>
     <arg name="sdf_robot_file" value="$(find husky_description)/sdf/model.sdf"/>
-
-    <node name="$(arg world_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-    args="-file $(arg sdf_world_file) -sdf -model maze -x $(arg x) -y $(arg y)"/>
 
     <group ns="robot1">
         <node name="$(arg robot1_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-file $(arg sdf_robot_file) -sdf -model robot1 -x -7.4 -y -5.5 -Y 1.57"/>
@@ -53,4 +49,8 @@
       <param name="init_pose_z" value="0.0"/>
       <param name="init_pose_yaw" value="0.0"/>
     </group>
+
+    <arg name="sdf_world_file" value="$(find map_generate)/worlds/model.sdf"/>
+    <node name="$(arg world_name)_spawn" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    args="-file $(arg sdf_world_file) -sdf -model maze -x $(arg x) -y $(arg y)"/>
 </launch>
